@@ -1,4 +1,4 @@
-{
+const dialectData = {
 	"adverbs": ["Agilely",
 	  "Appropriately",
 	  "Assertively",
@@ -1880,4 +1880,6 @@
 	  "Underachieves on agreed deliverables in",
 	  "Jumpstarts digitial initiatives in"
 	]
-  }
+  };
+
+export default dialectData;

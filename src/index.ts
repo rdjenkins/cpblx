@@ -1,9 +1,4 @@
-// Extra configuration
-require('./animals.js');
-require('./crayola.js');
-require('./dialect/load_dialects-node.js');
-
-var cpblx = require('./cpblx.js');
+import cpblx from './cpblx';
 
 const dialects = new Array(
     1, //general

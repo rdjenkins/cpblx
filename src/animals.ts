@@ -4,7 +4,7 @@
 // single word and de-duped
 
 
-module.exports = animals = new Array(
+const animals = new Array(
   "Aardvark",
   "Aardwolf",
   "Albatross",
@@ -553,5 +553,7 @@ module.exports = animals = new Array(
   "Zebra",
   "zoea",
 );
+
+export default animals;
 
 //console.log("Animals script loaded " + animals.length + " animals");

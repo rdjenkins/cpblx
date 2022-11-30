@@ -3,7 +3,8 @@
 // others added from https://gist.github.com/bobspace/2712980
 // single word colours from https://en.wikipedia.org/wiki/Lists_of_colors
 // sorted and de-duped
-module.exports = colours = new Array(
+
+const colours = new Array(
   "Aero",
   "Alabaster",
   "AliceBlue",
@@ -370,5 +371,7 @@ module.exports = colours = new Array(
   "Zaffre",
   "Zomp",
 );
+
+export default colours;
 
 //console.log("Colours script loaded " + colours.length + " colours");
