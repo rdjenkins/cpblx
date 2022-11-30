@@ -371,4 +371,4 @@ module.exports = colours = new Array(
   "Zomp",
 );
 
-console.log("Colours script loaded " + colours.length + " colours");
+//console.log("Colours script loaded " + colours.length + " colours");

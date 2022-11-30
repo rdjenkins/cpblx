@@ -1,6 +1,6 @@
 // Extra configuration
 require('./animals.js');
-require('./crayola.js');
+require('./crayola.ts');
 require('./dialect/load_dialects-node.js');
 
 var cpblx = require('./cpblx.js');

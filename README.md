@@ -2,9 +2,9 @@
 
 A JavaScript function to generate random corporate quotes.
 
-##Example
+## Example
 
-cd cpblx
-npm install
-npm run build
-npm start
+1. `cd cpblx`
+2. `npm install`
+3. `npm run build`
+4. `npm start`

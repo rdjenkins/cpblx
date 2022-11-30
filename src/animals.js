@@ -554,4 +554,4 @@ module.exports = animals = new Array(
   "zoea",
 );
 
-console.log("Animals script loaded " + animals.length + " animals");
+//console.log("Animals script loaded " + animals.length + " animals");
