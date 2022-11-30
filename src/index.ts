@@ -21,10 +21,22 @@ const dialects = new Array(
     13, //greenwash
 );
 
+const quantity = new Array(
+    -2, // The why how what
+    -1, // The Why
+    -3, // Five things
+    -4, // Appraisal
+    0, // A brief bullet point
+    5, // 5 sentences
+    10, // 10 sentences
+    -5, // Tweet with hashtags
+    // -6, -7, and -8 get images so not implemented yet
+)
+
 function random_choice(anArray: any[]) {
     return anArray[(Math.random() * anArray.length) | 0]
 }
 
-const txt = cpblx(random_choice(dialects),-5).replace(/(<([^>]+)>)/gi, "");
+const txt = cpblx(random_choice(dialects),random_choice(quantity));
 
 console.log(txt);
