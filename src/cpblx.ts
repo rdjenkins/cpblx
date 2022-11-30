@@ -25,13 +25,13 @@ import dialectData from './dialect/dialects'
 
 var hashtags = []; // make hashtags global
 
-function cpblx(dialect=1,x=-5) {
+function cpblx(dialect = 1, x = -5) {
 
     var image_search_term = ""; // blank term for the Pixabay search
 
 
-// Outstanding adjective noun pairs found in the wild. No really. These are examples from the wild.
-// Just collecting these for the moment ... will use them somehow.
+    // Outstanding adjective noun pairs found in the wild. No really. These are examples from the wild.
+    // Just collecting these for the moment ... will use them somehow.
     var adjective_noun_pair = new Array(
         '\"online grocery penetration\"',
         '\"hyperconnected experience\"'
@@ -39,13 +39,13 @@ function cpblx(dialect=1,x=-5) {
 
 
 
-// Mechanism for generating hashtags (hashtags is global)
+    // Mechanism for generating hashtags (hashtags is global)
     var thedate = new Date();
     var theday = thedate.getDay();
 
     switch (theday) {
         case 0:
-            hashtags = new Array('#SundayThoughts', '#SundayVibes', '#SundayMorning', '#SundayMotivation', '#SundayFunday','#SundayBrunch', '#weekend');
+            hashtags = new Array('#SundayThoughts', '#SundayVibes', '#SundayMorning', '#SundayMotivation', '#SundayFunday', '#SundayBrunch', '#weekend');
             break;
         case 1:
             hashtags = new Array('#MondayThoughts', '#MondayVibes', '#MondayMorning', '#MondayMotivation', '#MondayMood');
@@ -54,10 +54,10 @@ function cpblx(dialect=1,x=-5) {
             hashtags = new Array('#TuesdayThoughts', '#TuesdayVibes', '#TuesdayMorning', '#TuesdayMotivation', '#TuesdayTip');
             break;
         case 3:
-            hashtags = new Array('#WednesdayThoughts', '#WednesdayVibes', '#WednesdayMorning', '#WednesdayMotivation','#WednesdayWisdom');
+            hashtags = new Array('#WednesdayThoughts', '#WednesdayVibes', '#WednesdayMorning', '#WednesdayMotivation', '#WednesdayWisdom');
             break;
         case 4:
-            hashtags = new Array('#ThursdayThoughts', '#ThursdayVibes', '#ThursdayMorning', '#ThursdayMotivation','#ThursdayThrill', '#ThursdayAesthetic');
+            hashtags = new Array('#ThursdayThoughts', '#ThursdayVibes', '#ThursdayMorning', '#ThursdayMotivation', '#ThursdayThrill', '#ThursdayAesthetic');
             break;
         case 5:
             hashtags = new Array('#FridayThoughts', '#FridayVibes', '#FridayMorning', '#FridayMotivation', '#FridayFeeling');
@@ -76,7 +76,7 @@ function cpblx(dialect=1,x=-5) {
     // colour animal ... pool writer ... now replaces the cheesy individual dialect authors
     var author = colours[Math.floor(Math.random() * colours.length)] + " " + animals[Math.floor(Math.random() * animals.length)];
 
-    
+
 
     // we slice these as there is popping later on
     var adjectives = shuffle(dialectData.adjectives.slice());
@@ -87,9 +87,9 @@ function cpblx(dialect=1,x=-5) {
     var nouns = shuffle(dialectData.nouns.slice());
     var adverbs = shuffle(dialectData.adverbs.slice());
 
-// appraisal or performance review starters
-// With apologies to https://www.tinypulse.com/blog/sk-useful-phrases-performance-reviews
-// and https://www.myhubintranet.com/performance-review-example-phrases/
+    // appraisal or performance review starters
+    // With apologies to https://www.tinypulse.com/blog/sk-useful-phrases-performance-reviews
+    // and https://www.myhubintranet.com/performance-review-example-phrases/
     var appraise_starts = shuffle(dialectData.appraise_starts.slice());
     var appraise_quant = shuffle(dialectData.appraise_quant.slice());
 
@@ -98,7 +98,7 @@ function cpblx(dialect=1,x=-5) {
             nouns = shuffle(dialectData._VSnouns.slice());
             adverbs = shuffle(dialectData._VSadverbs.slice());
             var VStags = shuffle(dialectData._VStags.slice());
-            hashtags = shuffle(Array(hashtags[0],VStags.pop()));
+            hashtags = shuffle(Array(hashtags[0], VStags.pop()));
             image_search_term = shuffle(Array('volunteer', 'volunteering', 'charity')).pop();
             break;
         case 4: // use learning industry nouns and adverbs
@@ -171,9 +171,9 @@ function cpblx(dialect=1,x=-5) {
             nouns = shuffle(dialectData._ENTnouns.slice());
             verbs = shuffle(dialectData._ENTverbs.slice());
             adverbs = shuffle(dialectData._ENTadverbs.slice());
-            links = shuffle(links.concat(dialectData._ENTlinks.slice())); 
+            links = shuffle(links.concat(dialectData._ENTlinks.slice()));
             verbs_with_ing = shuffle(dialectData._ENTverbs_with_ing.slice());
-            adjectives = shuffle(dialectData._ENTadjectives.slice()); 
+            adjectives = shuffle(dialectData._ENTadjectives.slice());
             var ENTtags = shuffle(dialectData._ENTtags.slice());
             hashtags = Array(hashtags[0], ENTtags.pop(), ENTtags.pop(), ENTtags.pop(), ENTtags.pop(), ENTtags.pop(), ENTtags.pop(),);
             image_search_term = shuffle(Array('london+night', 'london+pub', 'london+bar', 'westminster', 'city+of+london', 'trafalgar+square', 'london+underground', 'london+bridge', 'london+shard', 'londoner')).pop();
@@ -182,20 +182,20 @@ function cpblx(dialect=1,x=-5) {
             nouns = shuffle(dialectData._ALEnouns.slice());
             verbs = shuffle(dialectData._ALEverbs.slice());
             adverbs = shuffle(dialectData._ALEadverbs.slice());
-            links = shuffle(links.concat(shuffle(dialectData._ALElinks.slice()))); 
+            links = shuffle(links.concat(shuffle(dialectData._ALElinks.slice())));
             verbs_with_ing = shuffle(dialectData._ALEverbs_with_ing.slice());
-            adjectives = shuffle(dialectData._ALEadjectives.slice()); 
+            adjectives = shuffle(dialectData._ALEadjectives.slice());
             var ALEtags = shuffle(dialectData._ALEtags.slice());
             hashtags = Array(hashtags[0], ALEtags.pop(), ALEtags.pop(), ALEtags.pop(), ALEtags.pop(), ALEtags.pop(), ALEtags.pop(),);
-            image_search_term = shuffle(Array('ale','beer', 'pub')).pop();
+            image_search_term = shuffle(Array('ale', 'beer', 'pub')).pop();
             break;
         case 13: // use Greenwash nouns and adverbs etc.
             nouns = shuffle(dialectData._GREENnouns.slice());
             verbs = shuffle(dialectData.verbs);
             adverbs = shuffle(dialectData._GREENadverbs.slice());
-            links = shuffle(links.concat(shuffle(dialectData._GREENlinks.slice()))); 
+            links = shuffle(links.concat(shuffle(dialectData._GREENlinks.slice())));
             verbs_with_ing = shuffle(dialectData._GREENverbs_with_ing.slice());
-            adjectives = shuffle(adjectives.concat(dialectData._GREENadjectives.slice())); 
+            adjectives = shuffle(adjectives.concat(dialectData._GREENadjectives.slice()));
             var GREENtags = shuffle(dialectData._GREENtags.slice());
             hashtags = Array(hashtags[0], GREENtags.pop(), GREENtags.pop(), GREENtags.pop(), GREENtags.pop(), GREENtags.pop(), GREENtags.pop(),);
             image_search_term = shuffle(Array('renewable energy', 'tidal power', 'solar panel', 'wind turbine')).pop();
@@ -203,11 +203,11 @@ function cpblx(dialect=1,x=-5) {
         default:
             hashtags = Array(hashtags[0]);
             image_search_term = shuffle(Array('business', 'industry', 'collaboration', 'office')).pop();
-//            author = shuffle(Array('Executive Comms', 'Operations manager', 'Human talent coordinator', 'Agile coordinator', 'Chief Operating Officer', 'Head of Alignment Strategy')).pop();
+        //            author = shuffle(Array('Executive Comms', 'Operations manager', 'Human talent coordinator', 'Agile coordinator', 'Chief Operating Officer', 'Head of Alignment Strategy')).pop();
     }
 
 
-//    array_to_console(links);
+    //    array_to_console(links);
 
     var statement = "";
 
@@ -237,7 +237,7 @@ function cpblx(dialect=1,x=-5) {
     if (x == -3) { // 5 things (i.e. 5 bullet points)
         statement = "FIVE things for " + adverbs.pop().toLowerCase() + " " + verbs_with_ing.pop() + "!";
         var i;
-        for (i = 1; i < 6; i++) { 
+        for (i = 1; i < 6; i++) {
             statement = statement + " " + i + ") ";
             statement = statement + adverbs.pop();
             statement = statement + " " + verbs.pop();
@@ -250,8 +250,8 @@ function cpblx(dialect=1,x=-5) {
     if (x == -4) { // appraisal bollox
         var i;
         var gain;
-        for (i = 1; i < 4; i++) { 
-            if (Math.random()>0.2) { // standard statement of appraisal
+        for (i = 1; i < 4; i++) {
+            if (Math.random() > 0.2) { // standard statement of appraisal
                 statement = statement + appraise_starts.pop() + " ";
                 statement = statement + " " + adjectives.pop();
                 statement = statement + " " + nouns.pop();
@@ -261,7 +261,7 @@ function cpblx(dialect=1,x=-5) {
                 statement = statement + " " + adjectives.pop();
                 statement = statement + " " + nouns.pop();
                 gain = 10 * (Math.floor(Math.random() * 10) + 3);
-                statement = statement + " by " + gain.toString() + "%. ";      
+                statement = statement + " by " + gain.toString() + "%. ";
             }
         }
     }
@@ -275,7 +275,7 @@ function cpblx(dialect=1,x=-5) {
     }
 
     while (x > 0) { // number of sentences
-        if (Math.random()>0.2 || x===1) { // standard sentence (or single glorious statement)
+        if (Math.random() > 0.2 || x === 1) { // standard sentence (or single glorious statement)
             statement = statement + adverbs.pop();
             statement = statement + " " + verbs.pop();
             statement = statement + " " + adjectives.pop();
@@ -285,23 +285,23 @@ function cpblx(dialect=1,x=-5) {
             statement = statement + " " + nouns.pop() + ". ";
         } else { // why how what sentence
             statement = statement + whw_start.pop();
-                statement = statement + " " + adjectives.pop();
-                statement = statement + " " + nouns.pop();
-                statement = statement + " through";
-                statement = statement + " " + adjectives.pop();
-                statement = statement + " " + nouns.pop();
-                statement = statement + " by ";
-                statement = statement + adverbs.pop().toLowerCase();
-                statement = statement + " " + verbs_with_ing.pop();
-                statement = statement + " " + adjectives.pop();
-                statement = statement + " " + nouns.pop();
-                statement = statement + ". ";
+            statement = statement + " " + adjectives.pop();
+            statement = statement + " " + nouns.pop();
+            statement = statement + " through";
+            statement = statement + " " + adjectives.pop();
+            statement = statement + " " + nouns.pop();
+            statement = statement + " by ";
+            statement = statement + adverbs.pop().toLowerCase();
+            statement = statement + " " + verbs_with_ing.pop();
+            statement = statement + " " + adjectives.pop();
+            statement = statement + " " + nouns.pop();
+            statement = statement + ". ";
         }
         x = x - 1;
     }
 
     if (x == -5) { // Tweet with hashtags
-        if (Math.random()>0.2) { // standard sentence (or single glorious statement)
+        if (Math.random() > 0.2) { // standard sentence (or single glorious statement)
             statement = statement + adverbs.pop();
             statement = statement + " " + verbs.pop();
             statement = statement + " " + adjectives.pop();
@@ -311,17 +311,17 @@ function cpblx(dialect=1,x=-5) {
             statement = statement + " " + nouns.pop() + ". ";
         } else { // why how what sentence
             statement = statement + whw_start.pop();
-                statement = statement + " " + adjectives.pop();
-                statement = statement + " " + nouns.pop();
-                statement = statement + " through";
-                statement = statement + " " + adjectives.pop();
-                statement = statement + " " + nouns.pop();
-                statement = statement + " by ";
-                statement = statement + adverbs.pop().toLowerCase();
-                statement = statement + " " + verbs_with_ing.pop();
-                statement = statement + " " + adjectives.pop();
-                statement = statement + " " + nouns.pop();
-                statement = statement + ". ";
+            statement = statement + " " + adjectives.pop();
+            statement = statement + " " + nouns.pop();
+            statement = statement + " through";
+            statement = statement + " " + adjectives.pop();
+            statement = statement + " " + nouns.pop();
+            statement = statement + " by ";
+            statement = statement + adverbs.pop().toLowerCase();
+            statement = statement + " " + verbs_with_ing.pop();
+            statement = statement + " " + adjectives.pop();
+            statement = statement + " " + nouns.pop();
+            statement = statement + ". ";
         }
         statement = statement + hashtags.join(" ");
     }
@@ -352,25 +352,25 @@ function shuffle(array: any[]) {
     return array;
 }
 
-function array_to_console(array: any[], sort=true) { // prints out a one-dimensional string array
+function array_to_console(array: any[], sort = true) { // prints out a one-dimensional string array
     if (sort) { array.sort(); }
     var output = "";
     for (var x in array) {
         output = output + " '" + array[x] + "',";
     }
-    output = output.replace(/^\s+|,$/gm,''); // remove spaces at the beginning and comma at end
+    output = output.replace(/^\s+|,$/gm, ''); // remove spaces at the beginning and comma at end
     console.log(output);
 }
 
 
 function makeid(length: number) { // source: https://stackoverflow.com/a/1349426/4066963
-   var result           = 'A'; // to avoid errors where a DOM element id starts with a number
-   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-   var charactersLength = characters.length;
-   for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-   }
-   return result;
+    var result = 'A'; // to avoid errors where a DOM element id starts with a number
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
 }
 
 

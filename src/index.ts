@@ -26,12 +26,12 @@ const quantity = new Array(
     10, // 10 sentences
     -5, // Tweet with hashtags
     // -6, -7, and -8 get images so not implemented yet
-)
+);
 
 function random_choice(anArray: any[]) {
     return anArray[(Math.random() * anArray.length) | 0]
-}
+};
 
-const txt = cpblx(random_choice(dialects),random_choice(quantity));
+const txt = cpblx(random_choice(dialects), random_choice(quantity));
 
 console.log(txt);
