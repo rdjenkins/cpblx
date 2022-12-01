@@ -26,8 +26,6 @@ Include a space for it to go
 Call the corporate bollox generator
 
 
-```
-
 ### default is random dialect and random quantity
 
 
