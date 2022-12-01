@@ -101,3 +101,10 @@ cpblx(dialect, quantity) // define dialect and quantity
 5 - 5 sentences
 
 10 - 10 sentences
+
+### TODO
+
+Move the generation mechanism to the same as used by the original nonsense generator [SciGen as ported to JavaScript by David Pomerenke](https://github.com/davidpomerenke/scigen.js).
+
+* reformat the cpblx rules to the original SciGen (2005) text format (done)
+* rework the rules generator files by adapting those from SciGen.js (done)
