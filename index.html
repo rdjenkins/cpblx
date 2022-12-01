@@ -18,6 +18,8 @@
     <div id="example"></div>
 
 <script>
+    document.getElementById('example').innerHTML = cpblx(false,1,10);
+
     function crap(e) {
         var tag = document.createElement("p");
         var text = document.createTextNode(cpblx());
@@ -26,7 +28,6 @@
         element.appendChild(tag);
     }
 
-    crap('example');
     setInterval(crap, 5000, 'example');
 
 </script>
