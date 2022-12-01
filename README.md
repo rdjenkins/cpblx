@@ -43,7 +43,7 @@ document.getElementById('crap').innerHTML = cpblx();
 ### options for calling cpblx
 
 ```
-cpblx()                  // the defaulr random dialect and quantity
+cpblx()                  // random dialect and quantity
 cpblx(dialect)           // define the dialect, random quantity
 cpblx(dialect, quantity) // define dialect and quantity
 ```
