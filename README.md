@@ -111,7 +111,7 @@ Move the generation mechanism to the same as used by the original nonsense gener
 
 * reformat the cpblx rules to the [original SciGen (2005)](https://github.com/strib/scigen) text format (done)
 * rework the rules generator files in Perl and JavaScript by adapting those from SciGen.js (done)
-* add the mechanism to this TypeScript Library
+* add the mechanism to this TypeScript Library (in progress)
 
 Make use of the animals and colours somewhere.
 
