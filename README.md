@@ -4,14 +4,14 @@ A JavaScript function to generate random corporate quotes.
 
 ## Building
 
-Install dependencies and build with webpack
+Install dependencies for npm and build with webpack
 
 ```
 npm install
 npm run build
 ```
 
-This updates the cpblx package in the dist/ folder
+This updates the cpblx bundle in the dist/ folder
 
 ## Usage
 
@@ -27,22 +27,25 @@ Include a space on the pages to display it e.g.
 <div id="crap"></div>
 ```
 
-Put the corporate bollox generator to work
+Then put the corporate bollox generator to work.
 
 
 ### default is random dialect and random quantity
 
+e.g.
 
 ```
+<script>
 document.getElementById('crap').innerHTML = cpblx();
+</script>
 ```
 
-### options
+### options for calling cpblx
 
 ```
-cpblx()
-cpblx(dialect)
-cpblx(dialect, quantity)
+cpblx()                  // the defaulr random dialect and quantity
+cpblx(dialect)           // define the dialect, random quantity
+cpblx(dialect, quantity) // define dialect and quantity
 ```
 
 #### Dialects
