@@ -18,5 +18,8 @@ module.exports = {
   output: {
     filename: 'cpblx.js',
     path: path.resolve(__dirname, 'dist'),
+    library: 'cpblx',
+    libraryTarget: 'window',
+    libraryExport: 'default'
   },
 };
