@@ -25,7 +25,44 @@ import dialectData from './dialect/dialects'
 
 var hashtags = []; // make hashtags global
 
-function cpblx(dialect = 1, x = -5) {
+function cpblx(rand=true, dialect = 1, x = -5) {
+
+    if (rand){
+        const dialects = new Array(
+            1, //general
+            2, //healthcare
+            3, //publishing
+            4, //learning
+            5, //voluntary
+            6, //COVID-19
+            7, //Brexiteer
+            8, //consipracy theory
+            9, //STEM
+            10, //legal
+            11, //entertainment
+            12, //craftale
+            13, //greenwash
+        );
+        
+        const quantity = new Array(
+            -2, // The why how what
+            -1, // The Why
+            -3, // Five things
+            -4, // Appraisal
+            0, // A brief bullet point
+            5, // 5 sentences
+            10, // 10 sentences
+            -5, // Tweet with hashtags
+            // -6, -7, and -8 get images so not implemented yet
+        );
+        
+        function random_choice(anArray: any[]) {
+            return anArray[(Math.random() * anArray.length) | 0]
+        };
+
+        dialect = random_choice(dialects);
+        x = random_choice(quantity);
+    }
 
     var image_search_term = ""; // blank term for the Pixabay search
 

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Corporate Bollox Generator example">
+    <meta name="author" content="CPBLX Team">
+    <title>Corporate Bollox Generator example</title>
+    <script src="./dist/cpblx.js"></script>
+</head>
+<body>
+    <h1>Example cpblx production</h1>
+    <p>
+        <em>
+            More will be added every 5 seconds
+        </em>
+    </p>
+    <div id="example"></div>
+
+<script>
+    function crap(e) {
+        var tag = document.createElement("p");
+        var text = document.createTextNode(cpblx());
+        tag.appendChild(text);
+        var element = document.getElementById(e);
+        element.appendChild(tag);
+    }
+
+    crap('example');
+    setInterval(crap, 5000, 'example');
+
+</script>
+
+</body>
+</html>
