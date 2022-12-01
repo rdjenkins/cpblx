@@ -40,6 +40,8 @@ document.getElementById('crap').innerHTML = cpblx();
 </script>
 ```
 
+See an example [here on github](https://rdjenkins.github.io/cpblx/) or [even more options on our server](https://agnate.co.uk/cpblx/).
+
 ### options for calling cpblx
 
 ```
