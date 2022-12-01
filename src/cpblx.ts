@@ -22,6 +22,7 @@
 import animals from './animals';
 import colours from './crayola';
 import dialectData from './dialect/dialects'
+import { cpblxgen } from './cpblxgen';
 
 var hashtags = []; // make hashtags global
 
@@ -55,6 +56,7 @@ function cpblx(dialect = 0, x = 0) {
 
     if (x === 0){
         const quantity = new Array(
+            -9, // Why Case
             // -6, -7, and -8 get images so not implemented yet
             -5, // Tweet with hashtags
             -4, // Appraisal
@@ -67,6 +69,10 @@ function cpblx(dialect = 0, x = 0) {
         );
 
         x = random_choice(quantity);
+    }
+
+    if (x === -9) {
+        return cpblxgen('WHY_CASE');
     }
 
     var image_search_term = ""; // blank term for the Pixabay search

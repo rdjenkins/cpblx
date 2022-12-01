@@ -50,6 +50,7 @@ View more corporate guff [on our server](https://agnate.co.uk/cpblx/). (We are w
 cpblx()                  // random dialect and quantity
 cpblx(dialect)           // define the dialect, random quantity
 cpblx(dialect, quantity) // define dialect and quantity
+cpblx(any, -9)           // delivers general dialect 'Why Case' using SciGen mechanism
 ```
 
 #### Dialects
@@ -83,6 +84,8 @@ cpblx(dialect, quantity) // define dialect and quantity
 13 - greenwash
 
 #### Quantity
+
+-9 - The Why Case (only delivers general dialect)
 
 -5 - Tweet with hashtags
 
