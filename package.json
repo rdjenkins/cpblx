@@ -10,7 +10,7 @@
     },
     "keywords": [],
     "author": "Dean Jenkins",
-    "license": "MIT",
+    "license": "GPL-3.0",
     "husky": {
         "hooks": {
             "pre-commit": "pretty-quick --staged"
