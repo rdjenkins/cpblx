@@ -40,7 +40,9 @@ document.getElementById('crap').innerHTML = cpblx();
 </script>
 ```
 
-See an example [here on github](https://rdjenkins.github.io/cpblx/) or [even more options on our server](https://agnate.co.uk/cpblx/).
+See an example [here on github](https://rdjenkins.github.io/cpblx/).
+
+View more corporate guff [on our server](https://agnate.co.uk/cpblx/). (We are working on how to get image options to work in this library).
 
 ### options for calling cpblx
 
