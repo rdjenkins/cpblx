@@ -25,45 +25,47 @@ Include a space for it to go
 
 Call the corporate bollox generator
 
-### random
+
+```
+
+### default is random dialect and random quantity
+
 
 ```
 document.getElementById('crap').innerHTML = cpblx();
 ```
 
-### default (General Corporate, Tweet)
-
-'false' means not random dialect and quantity - it defaults to 1 , -5 (see below)
+### options
 
 ```
-document.getElementById('crap').innerHTML = cpblx(false);
+cpblx()
+cpblx(dialect)
+cpblx(dialect, quantity)
 ```
-
-### other options
-
-cpblx(false, dialect, quantity)
 
 Dialects
-1, //general
-2, //healthcare
-3, //publishing
-4, //learning
-5, //voluntary
-6, //COVID-19
-7, //Brexiteer
-8, //consipracy theory
-9, //STEM
-10, //legal
-11, //entertainment
-12, //craftale
-13, //greenwash
+0 - random
+1 - general
+2 - healthcare
+3 - publishing
+4 - learning
+5 - voluntary
+6 - COVID-19
+7 - Brexiteer
+8 - consipracy theory
+9 - STEM
+10 - legal
+11 - entertainment
+12 - craftale
+13 - greenwash
 
 Quantity
--2, // The why how what
--1, // The Why
--3, // Five things
--4, // Appraisal
-0, // A brief bullet point
-5, // 5 sentences
-10, // 10 sentences
--5, // Tweet with hashtags
+-5 - Tweet with hashtags
+-4 - Appraisal
+-3 - Five things
+-2.1 - The why how what
+-2 - The Why
+-1 - A brief bullet point
+0 - random
+5 - 5 sentences
+10 - 10 sentences
