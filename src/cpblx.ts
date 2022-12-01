@@ -13,7 +13,7 @@
 // Added some words from Shakespeare who seems to invented many. https://www.litcharts.com/blog/shakespeare/words-shakespeare-invented/
 // TODO more dialects - IT / Silicon Valley / 'tech bro', FinTech
 // TODO somehow preserve phrases as they appear in the wild in their full form. e.g. 'online grocery penetration'. This is an adjective noun pair (possibly?) and could be used as an authentic whole rather than splitting up into 'online' adjective, and 'grocery penetration' which sounds bizarre in isolation.
-// TODO other sentence formats. "Having [] is crucial for growth in []".
+// TODO other sentence formats. "Having [] is crucial for growth in []". (This can be done with the SciGen mechanism - for v2 perhaps)
 // TODO This is hand-coded bollox. What would Markov chain or neural network generated bollox look like?
 
 // Further reading: https://en.wikipedia.org/wiki/Syntactic_category, http://research.cs.queensu.ca/CompLing/whatis.html, https://en.wikipedia.org/wiki/List_of_buzzwords
@@ -25,9 +25,15 @@ import dialectData from './dialect/dialects'
 
 var hashtags = []; // make hashtags global
 
-function cpblx(rand=true, dialect = 1, x = -5) {
+function random_choice(anArray: any[]) {
+    return anArray[(Math.random() * anArray.length) | 0]
+};
 
-    if (rand){
+function cpblx(dialect = 0, x = 0) {
+
+    // 0 means randomly choose
+
+    if (dialect === 0){
         const dialects = new Array(
             1, //general
             2, //healthcare
@@ -43,24 +49,23 @@ function cpblx(rand=true, dialect = 1, x = -5) {
             12, //craftale
             13, //greenwash
         );
-        
-        const quantity = new Array(
-            -2, // The why how what
-            -1, // The Why
-            -3, // Five things
-            -4, // Appraisal
-            0, // A brief bullet point
-            5, // 5 sentences
-            10, // 10 sentences
-            -5, // Tweet with hashtags
-            // -6, -7, and -8 get images so not implemented yet
-        );
-        
-        function random_choice(anArray: any[]) {
-            return anArray[(Math.random() * anArray.length) | 0]
-        };
 
         dialect = random_choice(dialects);
+    }
+
+    if (x === 0){
+        const quantity = new Array(
+            // -6, -7, and -8 get images so not implemented yet
+            -5, // Tweet with hashtags
+            -4, // Appraisal
+            -3, // Five things
+            -2.1, // The why how what
+            -2, // The Why
+            -1, // A brief bullet point
+            5, // 5 sentences
+            10, // 10 sentences
+        );
+
         x = random_choice(quantity);
     }
 
@@ -248,7 +253,7 @@ function cpblx(rand=true, dialect = 1, x = -5) {
 
     var statement = "";
 
-    if (x == -2) { // The why how what
+    if (x == -2.1) { // The why how what
         statement = whw_start.pop();
         statement = statement + " " + adjectives.pop();
         statement = statement + " " + nouns.pop();
@@ -264,7 +269,7 @@ function cpblx(rand=true, dialect = 1, x = -5) {
     }
 
 
-    if (x == -1) { // The why
+    if (x == -2) { // The why
         statement = adjectives.pop();
         statement = statement + " " + nouns.pop();
         statement = statement.charAt(0).toUpperCase() + statement.slice(1) + "! ";
@@ -303,7 +308,7 @@ function cpblx(rand=true, dialect = 1, x = -5) {
         }
     }
 
-    if (x == 0) { // A brief bullet point
+    if (x == -1) { // A brief bullet point
         statement = statement + adverbs.pop();
         statement = statement + " " + verbs.pop();
         statement = statement + " " + adjectives.pop();

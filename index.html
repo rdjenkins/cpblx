@@ -10,15 +10,22 @@
 </head>
 <body>
     <h1>Example cpblx production</h1>
-    <p>
-        <em>
-            More will be added every 5 seconds
-        </em>
-    </p>
-    <div id="example"></div>
+    <h2>General techno-optimistic - 10 sentences</h2>
+    <div id="example1"></div>
+    <h2>Healthcare - 5 sentences</h2>
+    <div id="example2"></div>
+    <h2>Publishing - a brief bullet point</h2>
+    <div id="example3"></div>
+    <h2>Learning - The Why</h2>
+    <div id="example4"></div>
+    <h2>Streaming random</h2>
+    <div id="examples"></div>
 
 <script>
-    document.getElementById('example').innerHTML = cpblx(false,1,10);
+    document.getElementById('example1').innerHTML = cpblx(1,10);
+    document.getElementById('example2').innerHTML = cpblx(2,5);
+    document.getElementById('example3').innerHTML = cpblx(3,-1);
+    document.getElementById('example4').innerHTML = cpblx(4,-2);
 
     function crap(e) {
         var tag = document.createElement("p");
@@ -28,7 +35,7 @@
         element.appendChild(tag);
     }
 
-    setInterval(crap, 5000, 'example');
+    setInterval(crap, 5000, 'examples');
 
 </script>
 
