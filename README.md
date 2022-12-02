@@ -119,4 +119,4 @@ Move the generation mechanism to the same as used by the original nonsense gener
 
 Make use of the animals and colours somewhere.
 
-* they are used on the cpblx website for the Blog-it feature but not used (yet) in this library
+* they are used on the [cpblx website](https://agnate.co.uk/cpblx/?n=-7&d=2) for the Blog-it feature but not used (yet) in this library
