@@ -2,6 +2,8 @@
 
 A JavaScript function to generate random corporate quotes.
 
+"We exist to build end-to-end Diverse Remote Teams through dynamic leadership skills by escalatingly envisioneering meta-services. Who wouldn't want to deliver resource-sucking markets? Why fail to supply future-proof blockchains? Before 5 years ago there were only supply chains or enabled UX. That's why we fashion, we fabricate, and we whiteboard - competently encapsulating our client-focused USPs."
+
 ## Building
 
 Install dependencies for npm and build with webpack
