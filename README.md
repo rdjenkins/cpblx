@@ -2,7 +2,9 @@
 
 A JavaScript function to generate random corporate quotes.
 
-"We exist to build end-to-end Diverse Remote Teams through dynamic leadership skills by escalatingly envisioneering meta-services. Who wouldn't want to deliver resource-sucking markets? Why fail to supply future-proof blockchains? Before 5 years ago there were only supply chains or enabled UX. That's why we fashion, we fabricate, and we whiteboard - competently encapsulating our client-focused USPs."
+"We exist to build end-to-end Diverse Remote Teams through dynamic leadership skills by escalatingly envisioneering meta-services. Who wouldn't want to deliver resource-sucking markets? Why fail to supply future-proof blockchains? Before 5 years ago there were only supply chains or enabled UX. That's why we fashion, we fabricate, and we whiteboard - competently encapsulating our client-focused USPs.
+
+Our purpose is to add imploratory outsourcing by building inexpensive sprints and using credibly centering our people-centric digital business transformation (DBT). When will we achieve inexpensive functionalities? What drives our cross-platform scrums? We started with efficient vertically aligned portals. We are not ashamed to build, to optimize, and to onboard - always completely generating our business conversion and storytelling."
 
 ## Building
 
