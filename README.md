@@ -111,7 +111,7 @@ cpblx(any, -9)           // delivers general dialect 'Why Case' using SciGen mec
 
 ### TODO
 
-Move the generation mechanism to the same as used by the original nonsense generator [SciGen as ported to JavaScript by David Pomerenke](https://github.com/davidpomerenke/scigen.js).
+Move the generation mechanism to the same as used by the original nonsense generator [SciGen as ported to JavaScript by David Pomerenke](https://github.com/davidpomerenke/scigen.js). Note: [SciGen.js has been forked for cpblx](https://github.com/rdjenkins/scigen.js).
 
 * reformat the cpblx rules to the [original SciGen (2005)](https://github.com/strib/scigen) text format (done)
 * rework the rules generator files in Perl and JavaScript by adapting those from SciGen.js (done)
