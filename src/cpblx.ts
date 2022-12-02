@@ -72,7 +72,13 @@ function cpblx(dialect = 0, x = 0) {
     }
 
     if (x === -9) {
-        return cpblxgen('WHY_CASE');
+        switch (dialect) {
+            case 7:
+                return cpblxgen('BREXIT_WHY_CASE');
+                break;
+            default:
+                return cpblxgen('WHY_CASE');
+        }
     }
 
     var image_search_term = ""; // blank term for the Pixabay search
