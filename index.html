@@ -10,33 +10,52 @@
 </head>
 <body>
     <h1>Example cpblx production</h1>
-    <h2>General techno-optimistic - 10 sentences</h2>
-    <div id="example1"></div>
-    <h2>Healthcare - 5 sentences</h2>
-    <div id="example2"></div>
-    <h2>Publishing - a brief bullet point</h2>
-    <div id="example3"></div>
-    <h2>BREXIT - The Why Case (using SciGen)</h2>
+    <p>Try from the examples below</p>
+
+    <button
+        onclick="document.getElementById('example4').innerHTML = cpblx(7,-9);"
+        >BREXIT - The Why Case (using SciGen)</button>
     <div id="example4"></div>
-    <h2>Streaming random</h2>
+    <br><br>
+
+    <button
+        onclick="document.getElementById('example5').innerHTML = cpblx(1,-9);"
+        >General - The Why Case (using SciGen)</button>
+    <div id="example5"></div>
+    <br><br>
+
+    <button 
+        onclick="document.getElementById('example1').innerHTML = cpblx(1, 10);"
+        >
+        General techno-optimistic - 10 sentences</button>
+    <div id="example1"></div>
+    <br><br>
+
+    <button
+        onclick="document.getElementById('example2').innerHTML = cpblx(2, 5);"
+        ">Healthcare - 5 sentences</button>
+    <div id="example2"></div>
+    <br><br>
+
+    <button
+        onclick="document.getElementById('example3').innerHTML = cpblx(3,-1);"
+        >Publishing - a brief bullet point</button>
+    <div id="example3"></div>
+    <br><br>
+
+    <button
+        onclick="crap('examples')">Add random</button>
     <div id="examples"></div>
 
 <script>
-    document.getElementById('example1').innerHTML = cpblx(1, 10);
-    document.getElementById('example2').innerHTML = cpblx(2, 5);
-    document.getElementById('example3').innerHTML = cpblx(3,-1);
-    document.getElementById('example4').innerHTML = cpblx(7,-9); // in v1.2.1 quantity of -9 (the WHY CASE) only does General or BREXIT dialect
+    
+    
 
     function crap(e) {
-        var tag = document.createElement("p");
-        var text = document.createTextNode(cpblx());
-        tag.appendChild(text);
-        var element = document.getElementById(e);
-        element.appendChild(tag);
+        var thebull = document.getElementById(e);
+        thebull.innerHTML = "<p>" + cpblx() + "</p>" + thebull.innerHTML; // just keep piling on the crap
     }
 
-    crap("examples")
-    setInterval(crap, 5000, 'examples');
 
 </script>
 
