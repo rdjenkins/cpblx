@@ -56,6 +56,7 @@ function cpblx(dialect = 0, x = 0) {
 
     if (x === 0){
         const quantity = new Array(
+            -10, // Scientific abstract
             -9, // Why Case
             // -6, -7, and -8 get images so not implemented yet
             -5, // Tweet with hashtags
@@ -78,6 +79,13 @@ function cpblx(dialect = 0, x = 0) {
                 break;
             default:
                 return cpblxgen('WHY_CASE');
+        }
+    }
+
+    if (x === -10) {
+        switch (dialect) {
+            default:
+                return cpblxgen('NHS_RCT_ABSTRACT');
         }
     }
 

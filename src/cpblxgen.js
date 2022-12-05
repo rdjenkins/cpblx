@@ -66,7 +66,8 @@ var prettyPrint = function prettyPrint(text) {
     line = line.trim();
     line = line.replace(/ +/g, " ");
     line = line.replace(/\s+([.,?;:])/g, "$1");
-    line = line.replace(/\ba\s+([aeiou])/gi, "$1");
+    line = line.replace(/\ba\s+([\"']*[aeiou])/gi, "an $1"); // modified for cpblx
+    line = line.replace(/\bthe\s+(["'])*the/gi, "$1the"); // sometimes the the appears in cpblx 
     line = line.replace(/^\s*[a-z]/, function (l) {
       return l.toUpperCase();
     });
@@ -81,6 +82,12 @@ var prettyPrint = function prettyPrint(text) {
 
     if (titleMatch) {
       line = titleMatch[1] + "{" + titleMatch[7][0].toUpperCase() + (0, _titleCase.titleCase)(titleMatch[7]).slice(1) + "}";
+    }
+                
+    var cpblxTitleMatch = line.match(/<title>([^<]+)<\/title>(.*)/);
+
+    if (cpblxTitleMatch) {
+      line = "<strong>" + cpblxTitleMatch[1].toUpperCase() + "</strong>" + cpblxTitleMatch[2];
     }
 
     if (line.match(/\n$/)) {
