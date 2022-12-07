@@ -87,7 +87,15 @@ var prettyPrint = function prettyPrint(text) {
     var cpblxTitleMatch = line.match(/<title>([^<]+)<\/title>(.*)/);
 
     if (cpblxTitleMatch) {
-      line = "<strong>" + cpblxTitleMatch[1].toUpperCase() + "</strong>" + cpblxTitleMatch[2];
+      if (Math.random > 0.5) {
+        // capitalise first letters of title (including the first word within quotes)
+        // https://regex101.com/r/2qv4Vy/1
+        var thistitle = cpblxTitleMatch[1].replace(/(^['"]{0,1}\w{1})|(\s+['"]{0,1}\w{1})/g, letter => letter.toUpperCase());
+      } else {
+        // capitalise all the title
+        var thistitle = cpblxTitleMatch[1].toUpperCase();
+      }
+      line = "<strong>" + thistitle + "</strong>" + cpblxTitleMatch[2];
     }
 
     if (line.match(/\n$/)) {

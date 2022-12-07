@@ -23,6 +23,7 @@ import animals from './animals';
 import colours from './crayola';
 import dialectData from './dialect/dialects'
 import { cpblxgen } from './cpblxgen';
+var seedrandom = require('seedrandom');
 
 var hashtags = []; // make hashtags global
 
@@ -30,9 +31,19 @@ function random_choice(anArray: any[]) {
     return anArray[(Math.random() * anArray.length) | 0]
 };
 
-function cpblx(dialect = 0, x = 0) {
+function cpblx(dialect = 0, x = 0, seed='') {
 
     // 0 means randomly choose
+
+    // set up random seed if needed
+    if (seed === '') {
+        seed = makeid(12);
+    }
+    var crap_id = seed;
+    console.log("Random seed = " + crap_id); // log the crap_id
+    console.log("dialect = " + dialect); // log dialect
+    console.log("quantity = " + x); // log quantity
+    seedrandom(crap_id, { global: true }); // from here on the randomness is reproducible
 
     if (dialect === 0){
         const dialects = new Array(
@@ -72,20 +83,26 @@ function cpblx(dialect = 0, x = 0) {
         x = random_choice(quantity);
     }
 
+    const link = ' <a href="?dialect=' + dialect + '&quantity=' + x + '&seed=' + crap_id + '" id="notsopermalink">link</a>';
+
+    function wrap_cpblxgen(start='') {
+        return cpblxgen(start) + link;
+    }
+
     if (x === -9) {
         switch (dialect) {
             case 7:
-                return cpblxgen('BREXIT_WHY_CASE');
+                return "<strong>The Case for Brexit</strong><br><br>" + wrap_cpblxgen('BREXIT_WHY_CASE');
                 break;
             default:
-                return cpblxgen('WHY_CASE');
+                return wrap_cpblxgen('WHY_CASE');
         }
     }
 
     if (x === -10) {
         switch (dialect) {
             default:
-                return cpblxgen('NHS_RCT_ABSTRACT');
+                return wrap_cpblxgen('NHS_RCT_ABSTRACT');
         }
     }
 
@@ -388,7 +405,7 @@ function cpblx(dialect = 0, x = 0) {
         statement = statement + hashtags.join(" ");
     }
 
-    return statement;
+    return statement + link;
 }
 
 
@@ -426,7 +443,8 @@ function array_to_console(array: any[], sort = true) { // prints out a one-dimen
 
 
 function makeid(length: number) { // source: https://stackoverflow.com/a/1349426/4066963
-    var result = 'A'; // to avoid errors where a DOM element id starts with a number
+    const valid_starters = "CPBLXcpblxSciGen"; // to avoid errors where a DOM element id starts with a number
+    var result = valid_starters[Math.floor(Math.random() * valid_starters.length)];
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var charactersLength = characters.length;
     for (var i = 0; i < length; i++) {

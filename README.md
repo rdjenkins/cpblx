@@ -1,12 +1,12 @@
 # Corporate Bollox Generator (cpblx)
 
-A JavaScript function to generate random corporate quotes.
+A JavaScript function to generate random corporate quotes and 'scientific' output.
 
 "We exist to build end-to-end Diverse Remote Teams through dynamic leadership skills by escalatingly envisioneering meta-services. Who wouldn't want to deliver resource-sucking markets? Why fail to supply future-proof blockchains? Before 5 years ago there were only supply chains or enabled UX. That's why we fashion, we fabricate, and we whiteboard - competently encapsulating our client-focused USPs.
 
 Our purpose is to add imploratory outsourcing by building inexpensive sprints and using credibly centering our people-centric digital business transformation (DBT). When will we achieve inexpensive functionalities? What drives our cross-platform scrums? We started with efficient vertically aligned portals. We are not ashamed to build, to optimize, and to onboard - always completely generating our business conversion and storytelling."
 
-## Building
+## (optional) Building
 
 Install dependencies for npm and build with webpack
 
@@ -51,10 +51,11 @@ View more corporate guff [on our server](https://agnate.co.uk/cpblx/). (We are w
 ### options for calling cpblx
 
 ```
-cpblx()                  // random dialect and quantity
-cpblx(dialect)           // define the dialect, random quantity
-cpblx(dialect, quantity) // define dialect and quantity
-cpblx(any, -9)           // delivers the 'Why Case' for some dialects using SciGen mechanism
+cpblx()                        // random dialect and quantity
+cpblx(dialect)                 // define the dialect, random quantity
+cpblx(dialect, quantity)       // define dialect and quantity
+cpblx(dialect, quantity, seed) // define dialect, quantity, and random seed
+                                  for reproducing the same stuff
 ```
 
 #### Dialects
@@ -88,6 +89,8 @@ cpblx(any, -9)           // delivers the 'Why Case' for some dialects using SciG
 13 - greenwash
 
 #### Quantity
+
+-10 - An abstract (healthcare only)
 
 -9 - The Why Case (only delivers some dialects)
 
