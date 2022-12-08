@@ -51,11 +51,11 @@ View more corporate guff [on our server](https://agnate.co.uk/cpblx/). (We are w
 ### options for calling cpblx
 
 ```
-cpblx()                        // random dialect and quantity
-cpblx(dialect)                 // define the dialect, random quantity
-cpblx(dialect, quantity)       // define dialect and quantity
-cpblx(dialect, quantity, seed) // define dialect, quantity, and random seed
-                                  for reproducing the same stuff
+cpblx()                           // random dialect and quantity
+cpblx(dialect)                    // define the dialect, random quantity
+cpblx(dialect, quantity)          // define dialect and quantity
+cpblx(dialect, quantity, options) // define dialect, quantity, and
+                                     other options (see below)
 ```
 
 #### Dialects
@@ -111,6 +111,20 @@ cpblx(dialect, quantity, seed) // define dialect, quantity, and random seed
 5 - 5 sentences
 
 10 - 10 sentences
+
+#### Options
+
+Send a JSON string of options
+
+```
+var cpblxoptions = `{
+    "showlink": true
+}`;
+document.getElementById('crap').innerHTML = cpblx(0,0,cpblxoptions);
+```
+
+* *showlink* adds a URL to the end of the generated text - see examples for a demo
+* *pid* presented in the URL above which sends the encoded details to recreate the exact same (memorable) cpblx output
 
 ### TODO
 

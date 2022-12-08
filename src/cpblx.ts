@@ -31,12 +31,24 @@ function random_choice(anArray: any[]) {
     return anArray[(Math.random() * anArray.length) | 0]
 };
 
-function cpblx(dialect = 0, x = 0, seed = '', pid = '') {
+function cpblx(dialect=0, x=0, opt = '{}') {
+//function cpblx(dialect = 0, x = 0, seed = '', pid = '') {
+
+var options = JSON.parse(opt);
+
+if (!options.seed) { options.seed = '' }
+if (!options.pid) { options.pid = '' }
+if (!options.showlink) { options.showlink = false }
+
+var seed = options.seed;
+var pid = options.pid;
+var showlink = options.showlink;
+
 
     // dialect or x of 0 means randomly choose
 
     if (pid !== '') { // the special pid parameter has been sent so deconstruct it
-        pid = smudge(pid, true);
+        pid = unsmudge(pid);
         var match = extractFromPid(pid);
         if (match !== null && match !== undefined) {
             if (match.length===4) {
@@ -93,7 +105,8 @@ function cpblx(dialect = 0, x = 0, seed = '', pid = '') {
     }
 
 //    const link = ' <a href="?dialect=' + dialect + '&quantity=' + x + '&seed=' + crap_id + '&pid=' + smudge(dialect + '|' + x + '|' + crap_id) + '" id="notsopermalink">link</a>';
-    const link = ' <a href="?pid=' + smudge(dialect + '~' + x + '~' + crap_id) + '" id="notsopermalink">link</a>';
+    const link = (showlink) ? ' <a href="?pid=' + smudge(dialect + '~' + x + '~' + crap_id) + '" id="notsopermalink">link</a>'
+                            : '<div id="notsopermalink"></div>';
 
     function wrap_cpblxgen(start = '') {
         return cpblxgen(start) + link;
@@ -415,10 +428,8 @@ function cpblx(dialect = 0, x = 0, seed = '', pid = '') {
         statement = statement + hashtags.join(" ");
     }
 
-    return statement + link;
+    return statement + link; // TODO the 'link' needs to be optional
 }
-
-
 
 function shuffle(array: any[]) {
     // source: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array#2450976
@@ -451,13 +462,18 @@ function array_to_console(array: any[], sort = true) { // prints out a one-dimen
     console.log(output);
 }
 
-const smudge = (str: string, un=false) => {
+function smudge(str: string, un=false) {
     const original = `-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ._~`;
     const cipher = `xv-01iuwB4j32zA5ykC67EFlf~D8egGh9HabqI_JQncRodsPpmOKLt.rNMSZWXTUYV`;
     if (un) { // unsmudge
         return str.replace(/[a-zA-Z0-9~\-\._]/g, char => original[cipher.indexOf(char)]);
     }
     return str.replace(/[a-zA-Z0-9~\-\._]/g, char => cipher[original.indexOf(char)]);
+}
+
+// an alias for smudge to make calling the opposite of smudge clearer in the code
+function unsmudge(str: string) {
+    return smudge(str, true);
 }
 
 function extractFromPid(str: string) {
