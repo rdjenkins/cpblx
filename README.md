@@ -124,7 +124,7 @@ document.getElementById('crap').innerHTML = cpblx(0,0,cpblxoptions);
 ```
 
 * *showlink* adds a URL to the end of the generated text - see examples for a demo
-* *pid* presented in the URL above which sends the encoded details to recreate the exact same (memorable) cpblx output
+* *pid* presented in the URL (provided by using the *showlink* option) which sends the encoded details to recreate the exact same (memorable) cpblx output. *pid* includes everything it needs - dialect and amount options are ignored
 
 ### TODO
 
