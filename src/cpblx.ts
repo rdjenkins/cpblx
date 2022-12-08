@@ -52,9 +52,6 @@ function cpblx(dialect = 0, x = 0, seed = '', pid = '') {
         seed = makeid(12);
     }
     var crap_id = seed;
-    console.log("Random seed = " + crap_id); // log the crap_id
-    console.log("dialect = " + dialect); // log dialect
-    console.log("quantity = " + x); // log quantity
     seedrandom(crap_id, { global: true }); // from here on the randomness is reproducible
 
     if (dialect === 0) {
@@ -96,7 +93,7 @@ function cpblx(dialect = 0, x = 0, seed = '', pid = '') {
     }
 
 //    const link = ' <a href="?dialect=' + dialect + '&quantity=' + x + '&seed=' + crap_id + '&pid=' + smudge(dialect + '|' + x + '|' + crap_id) + '" id="notsopermalink">link</a>';
-    const link = ' <a href="?pid=' + smudge(dialect + '|' + x + '|' + crap_id) + '" id="notsopermalink">link</a>';
+    const link = ' <a href="?pid=' + smudge(dialect + '~' + x + '~' + crap_id) + '" id="notsopermalink">link</a>';
 
     function wrap_cpblxgen(start = '') {
         return cpblxgen(start) + link;
@@ -455,16 +452,16 @@ function array_to_console(array: any[], sort = true) { // prints out a one-dimen
 }
 
 const smudge = (str: string, un=false) => {
-    const original = "-|0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    const cipher = "|xv-01iuwB4j32zA5ykC67EFlfD8egGh9HabqIJQncRodsPpmOKLtrNMSZWXTUYV"
+    const original = `-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ._~`;
+    const cipher = `xv-01iuwB4j32zA5ykC67EFlf~D8egGh9HabqI_JQncRodsPpmOKLt.rNMSZWXTUYV`;
     if (un) { // unsmudge
-        return str.replace(/[a-zA-Z0-9|\-]/g, char => original[cipher.indexOf(char)])
+        return str.replace(/[a-zA-Z0-9~\-\._]/g, char => original[cipher.indexOf(char)]);
     }
-    return str.replace(/[a-zA-Z0-9|\-]/g, char => cipher[original.indexOf(char)])
+    return str.replace(/[a-zA-Z0-9~\-\._]/g, char => cipher[original.indexOf(char)]);
 }
 
 function extractFromPid(str: string) {
-    const regex = /([-\d]+)\|([-\d]+)\|(.+)$/gm;
+    const regex = /([-\d]+)~([-\d]+)~(.+)$/gm; // the pid is of the form 5~-2~randomchars
     let m;
     while ((m = regex.exec(str)) !== null) {
         // This is necessary to avoid infinite loops with zero-width matches
@@ -478,7 +475,9 @@ function extractFromPid(str: string) {
 function makeid(length: number) { // source: https://stackoverflow.com/a/1349426/4066963
     const valid_starters = "CPBLXcpblxSciGen"; // to avoid errors where a DOM element id starts with a number
     var result = valid_starters[Math.floor(Math.random() * valid_starters.length)];
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    // url safe characters ... https://stackoverflow.com/a/695469/4066963
+    var characters = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._`;
+    //   ~ tilde left out as we use it as a separator in the pid for the URL
     var charactersLength = characters.length;
     for (var i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
