@@ -88,10 +88,14 @@
         const seededdialect = getUrlParam('dialect', 0);
         const seededquantity = getUrlParam('quantity', 0);
         const seed = getUrlParam('seed', '');
+        const pid = getUrlParam('pid', '');
 
-        if (seed !== '') {
-            console.log('dialect=' + seededdialect + ', quantity=' + seededquantity + ', seed=' + seed);
-            document.getElementById('seeded').innerHTML = cpblx(parseInt(seededdialect), parseInt(seededquantity), seed);
+        if (seed !== '' || pid !== '') {
+            if (pid !== '') {
+                document.getElementById('seeded').innerHTML = cpblx(0,0,'',pid);
+            } else {
+                document.getElementById('seeded').innerHTML = cpblx(parseInt(seededdialect), parseInt(seededquantity), seed);
+            }
             document.getElementById('curated').classList.remove('hidden');
             document.getElementById('examplearea').classList.add('hidden');
             document.getElementById('notsopermalink').classList.add('hidden');

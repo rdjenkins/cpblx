@@ -31,9 +31,21 @@ function random_choice(anArray: any[]) {
     return anArray[(Math.random() * anArray.length) | 0]
 };
 
-function cpblx(dialect = 0, x = 0, seed='') {
+function cpblx(dialect = 0, x = 0, seed = '', pid = '') {
 
-    // 0 means randomly choose
+    // dialect or x of 0 means randomly choose
+
+    if (pid !== '') { // the special pid parameter has been sent so deconstruct it
+        pid = smudge(pid, true);
+        var match = extractFromPid(pid);
+        if (match !== null && match !== undefined) {
+            if (match.length===4) {
+                dialect = parseInt(match[1]);
+                x = parseInt(match[2]);
+                seed = match[3];    
+            }
+        }
+    }
 
     // set up random seed if needed
     if (seed === '') {
@@ -45,7 +57,7 @@ function cpblx(dialect = 0, x = 0, seed='') {
     console.log("quantity = " + x); // log quantity
     seedrandom(crap_id, { global: true }); // from here on the randomness is reproducible
 
-    if (dialect === 0){
+    if (dialect === 0) {
         const dialects = new Array(
             1, //general
             2, //healthcare
@@ -65,7 +77,7 @@ function cpblx(dialect = 0, x = 0, seed='') {
         dialect = random_choice(dialects);
     }
 
-    if (x === 0){
+    if (x === 0) {
         const quantity = new Array(
             -10, // Scientific abstract
             -9, // Why Case
@@ -83,9 +95,10 @@ function cpblx(dialect = 0, x = 0, seed='') {
         x = random_choice(quantity);
     }
 
-    const link = ' <a href="?dialect=' + dialect + '&quantity=' + x + '&seed=' + crap_id + '" id="notsopermalink">link</a>';
+//    const link = ' <a href="?dialect=' + dialect + '&quantity=' + x + '&seed=' + crap_id + '&pid=' + smudge(dialect + '|' + x + '|' + crap_id) + '" id="notsopermalink">link</a>';
+    const link = ' <a href="?pid=' + smudge(dialect + '|' + x + '|' + crap_id) + '" id="notsopermalink">link</a>';
 
-    function wrap_cpblxgen(start='') {
+    function wrap_cpblxgen(start = '') {
         return cpblxgen(start) + link;
     }
 
@@ -441,6 +454,26 @@ function array_to_console(array: any[], sort = true) { // prints out a one-dimen
     console.log(output);
 }
 
+const smudge = (str: string, un=false) => {
+    const original = "-|0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    const cipher = "|xv-01iuwB4j32zA5ykC67EFlfD8egGh9HabqIJQncRodsPpmOKLtrNMSZWXTUYV"
+    if (un) { // unsmudge
+        return str.replace(/[a-zA-Z0-9|\-]/g, char => original[cipher.indexOf(char)])
+    }
+    return str.replace(/[a-zA-Z0-9|\-]/g, char => cipher[original.indexOf(char)])
+}
+
+function extractFromPid(str: string) {
+    const regex = /([-\d]+)\|([-\d]+)\|(.+)$/gm;
+    let m;
+    while ((m = regex.exec(str)) !== null) {
+        // This is necessary to avoid infinite loops with zero-width matches
+        if (m.index === regex.lastIndex) {
+            regex.lastIndex++;
+        }
+        return m;
+    }
+}
 
 function makeid(length: number) { // source: https://stackoverflow.com/a/1349426/4066963
     const valid_starters = "CPBLXcpblxSciGen"; // to avoid errors where a DOM element id starts with a number
