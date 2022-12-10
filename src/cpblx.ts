@@ -57,6 +57,7 @@ var showlink = options.showlink;
                 dialect = parseInt(match[1]);
                 x = parseInt(match[2]);
                 seed = match[3];    
+//                console.log(dialect + ":" + x + ":" + seed);
             }
         }
     }
