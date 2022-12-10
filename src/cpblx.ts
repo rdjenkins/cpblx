@@ -23,6 +23,8 @@ import animals from './animals';
 import colours from './crayola';
 import dialectData from './dialect/dialects'
 import { cpblxgen } from './cpblxgen';
+import show from './diagram';
+
 var seedrandom = require('seedrandom');
 
 var hashtags = []; // make hashtags global
@@ -88,6 +90,7 @@ var showlink = options.showlink;
 
     if (x === 0) {
         const quantity = new Array(
+            -11, // diagram
             -10, // Scientific abstract
             -9, // Why Case
             // -6, -7, and -8 get images so not implemented yet
@@ -128,6 +131,12 @@ var showlink = options.showlink;
                 return wrap_cpblxgen('NHS_RCT_ABSTRACT');
         }
     }
+
+    if (x === -11) {
+        var toshow = cpblxgen('GENERIC_DIAGRAM').replaceAll(/(} {)/g,"\n ");
+        toshow = toshow.replaceAll(/[\{\}\(\)]/g,"");
+        return show(toshow);
+    } 
 
     var image_search_term = ""; // blank term for the Pixabay search
 
