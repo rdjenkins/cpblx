@@ -90,7 +90,9 @@ cpblx(dialect, quantity, options) // define dialect, quantity, and
 
 #### Quantity
 
--10 - An abstract (healthcare only)
+-11 - A diagram in SVG format (generic dialect only)
+
+-10 - An abstract (healthcare dialect only)
 
 -9 - The Why Case (only delivers some dialects)
 

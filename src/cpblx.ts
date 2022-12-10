@@ -135,7 +135,7 @@ var showlink = options.showlink;
     if (x === -11) {
         var toshow = cpblxgen('GENERIC_DIAGRAM').replaceAll(/(} {)/g,"\n ");
         toshow = toshow.replaceAll(/[\{\}\(\)]/g,"");
-        return show(toshow);
+        return show(toshow) + "<div>" + link + "</div>";
     } 
 
     var image_search_term = ""; // blank term for the Pixabay search
