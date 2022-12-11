@@ -6,7 +6,7 @@ function show(instructions: string) {
         graph = svgGraph;
     };
     
-    mermaid.render('null',instructions,cb);
+    mermaid.render('id'+Date.now(),instructions,cb);
     return graph;
 }
 

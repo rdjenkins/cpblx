@@ -133,10 +133,19 @@ var showlink = options.showlink;
         }
     }
 
-    if (x === -11) {
-        var toshow = cpblxgen('GENERIC_DIAGRAM').replaceAll(/(} {)/g,"\n ");
+    function showit(startpoint = 'GENERIC_DIAGRAM') {
+        var toshow = cpblxgen(startpoint).replaceAll(/(} {)/g,"\n ");
         toshow = toshow.replaceAll(/[\{\}\(\)]/g,"");
         return show(toshow) + "<div>" + link + "</div>";
+    }
+
+    if (x === -11) {
+        switch (dialect) {
+            case 2:
+                return showit('NHS_DIAGRAM');
+            default:
+                return showit('GENERIC_DIAGRAM');
+        }
     } 
 
     var image_search_term = ""; // blank term for the Pixabay search
