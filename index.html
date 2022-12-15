@@ -169,7 +169,7 @@
             cpblxoptions = '{"pid": "' + pid + '"}';
             var cpblxOutput = cpblx(0, 0, cpblxoptions);
             if (cpblxOutput.includes("<svg")) { // it's a diagram
-                var trimmedSVG = cpblx(0, 0, cpblxoptions).replace(/.*(<svg.*\/svg>).*/g, "$1");
+                var trimmedSVG = cpblxOutput.replace(/.*(<svg.*\/svg>).*/g, "$1");
                 generateSvgImg("seeded", trimmedSVG);
             } else {
                 document.getElementById('seeded').innerHTML = cpblxOutput;
