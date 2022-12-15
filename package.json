@@ -1,6 +1,6 @@
 {
     "name": "cpblxjs",
-    "version": "1.4.3",
+    "version": "1.4.4",
     "description": "A corporate bollox generator",
     "main": "index.ts",
     "scripts": {
@@ -27,6 +27,7 @@
         "webpack-cli": "^5.0.0"
     },
     "dependencies": {
+        "html2canvas": "^1.4.1",
         "mermaid": "^9.2.2",
         "seedrandom": "^3.0.5",
         "ts-loader": "^9.4.1",

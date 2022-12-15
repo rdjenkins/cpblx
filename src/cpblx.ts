@@ -33,19 +33,18 @@ function random_choice(anArray: any[]) {
     return anArray[(Math.random() * anArray.length) | 0]
 };
 
-function cpblx(dialect=0, x=0, opt = '{}') {
-//function cpblx(dialect = 0, x = 0, seed = '', pid = '') {
+function cpblx(dialect = 0, x = 0, opt = '{}') {
+    //function cpblx(dialect = 0, x = 0, seed = '', pid = '') {
 
-var options = JSON.parse(opt);
+    var options = JSON.parse(opt);
 
-if (!options.seed) { options.seed = '' }
-if (!options.pid) { options.pid = '' }
-if (!options.showlink) { options.showlink = false }
+    if (!options.seed) { options.seed = '' }
+    if (!options.pid) { options.pid = '' }
+    if (!options.showlink) { options.showlink = false }
 
-var seed = options.seed;
-var pid = options.pid;
-var showlink = options.showlink;
-
+    var seed = options.seed;
+    var pid = options.pid;
+    var showlink = options.showlink;
 
     // dialect or x of 0 means randomly choose
 
@@ -53,11 +52,11 @@ var showlink = options.showlink;
         pid = unsmudge(pid);
         var match = extractFromPid(pid);
         if (match !== null && match !== undefined) {
-            if (match.length===4) {
+            if (match.length === 4) {
                 dialect = parseInt(match[1]);
                 x = parseInt(match[2]);
-                seed = match[3];    
-//                console.log(dialect + ":" + x + ":" + seed);
+                seed = match[3];
+                //                console.log(dialect + ":" + x + ":" + seed);
             }
         }
     }
@@ -108,9 +107,9 @@ var showlink = options.showlink;
         x = random_choice(quantity);
     }
 
-//    const link = ' <a href="?dialect=' + dialect + '&quantity=' + x + '&seed=' + crap_id + '&pid=' + smudge(dialect + '|' + x + '|' + crap_id) + '" id="notsopermalink">link</a>';
+    //    const link = ' <a href="?dialect=' + dialect + '&quantity=' + x + '&seed=' + crap_id + '&pid=' + smudge(dialect + '|' + x + '|' + crap_id) + '" id="notsopermalink">link</a>';
     const link = (showlink) ? ' <a href="?pid=' + smudge(dialect + '~' + x + '~' + crap_id) + '" id="notsopermalink">link</a>'
-                            : '<div id="notsopermalink"></div>';
+        : '<div id="notsopermalink"></div>';
 
     function wrap_cpblxgen(start = '') {
         return cpblxgen(start) + link;
@@ -120,7 +119,6 @@ var showlink = options.showlink;
         switch (dialect) {
             case 7:
                 return "<strong>The Case for Brexit</strong><br><br>" + wrap_cpblxgen('BREXIT_WHY_CASE');
-                break;
             default:
                 return wrap_cpblxgen('WHY_CASE');
         }
@@ -133,20 +131,50 @@ var showlink = options.showlink;
         }
     }
 
+    function portableSVG(mermaidSVG = '') {
+            // Start heroic ugly hacking of mermaid SVG output which relies on browser CSS styling and is therefore not as portable as it could be
+            // make piechart text the same as with CSS
+            mermaidSVG = mermaidSVG.replace(/<text class="pieTitleText"([^>]*)>([^>]*)<\/text>/g, "<text $1 font-family='\"trebuchet ms\",verdana,arial,sans-serif' text-anchor='middle' font-size='25px' fill='black'>$2</text>");
+            // make piechart legend the same as with CSS
+            mermaidSVG = mermaidSVG.replace(/<g([^>]*?)class="legend"(.*?)>/g, "<g$1font-family='\"trebuchet ms\",verdana,arial,sans-serif' font-size='16px' fill='#333'$2>");
+            // make piechart area the same as with CSS
+            // need to do something about the hsl colours
+            mermaidSVG = mermaidSVG.replace(/<path([^>]*?)class="pieCircle"([^>]*?)>/g, "<path$1stroke='black' stroke-width='2px' opacity='0.7'$2>");
+            // make piechart text marks the same as with CSS
+            mermaidSVG = mermaidSVG.replace(/<text([^>]*?)class="slice"([^>]*?)>/g, "<text$1font-family='\"trebuchet ms\",verdana,arial,sans-serif' font-size='17px' fill='#333'$2>");
+            // make node text visible without CSS
+            mermaidSVG = mermaidSVG.replace(/<span class="nodeLabel">([^>]*)<\/span>/g, "<text y='19.5' font-family='\"trebuchet ms\",verdana,arial,sans-serif' font-size='16px' fill='#333'>$1</text>");
+            // make edge label visbile without CSS
+            mermaidSVG = mermaidSVG.replace(/<span class="edgeLabel">([^>]+)<\/span>/g, "<text y='19.5' font-family='\"trebuchet ms\",verdana,arial,sans-serif' font-size='16px' fill='#333' filter='url(#greybackground)'>$1</text>");
+            // remove foreignObject tags which enable CSS
+            mermaidSVG = mermaidSVG.replace(/<foreignObject[^>]*><div xmlns[^>]*>(.*?)<\/div><\/foreignObject>/g, "$1");
+            // make nodes the right colour without CSS
+            mermaidSVG = mermaidSVG.replace(/<rect(.*?)style=""(.*?)>/g, "<rect$1style='fill:#ECECFF;stroke:#9370DB;stroke-width:1px;'$2>");
+            // make the edge lines visible without CSS styling
+            mermaidSVG = mermaidSVG.replace(/style="fill:none;"/g, 'style="stroke:#121212; fill:none;"');
+            // remove CSS style sheet and add a background for edge labels
+            mermaidSVG = mermaidSVG.replace(/(<style>.*<\/style>)/,"<filter x='0' y='0' width='1' height='1' id='greybackground'><feFlood flood-color='#e8e8e8' result='bg'/><feMerge><feMergeNode in='bg'/><feMergeNode in='SourceGraphic'/></feMerge></filter>");
+            // trim the SVG
+            mermaidSVG = mermaidSVG.replace(/.*(<svg.*\/svg>).*/g, "$1");
+            return mermaidSVG;
+    }
+
     function showit(startpoint = 'GENERIC_DIAGRAM') {
-        var toshow = cpblxgen(startpoint).replaceAll(/(} {)/g,"\n ");
-        toshow = toshow.replaceAll(/[\{\}\(\)]/g,"");
-        return show(toshow) + "<div>" + link + "</div>";
+        var toshow = cpblxgen(startpoint).replaceAll(/(} {)/g, "\n ");
+        toshow = toshow.replaceAll(/[\{\}\(\)]/g, "");
+        return portableSVG(show(toshow)) + "<div>" + link + "</div>";
     }
 
     if (x === -11) {
         switch (dialect) {
             case 2:
                 return showit('NHS_DIAGRAM');
+            case 7:
+                return showit('BREXIT_DIAGRAM');
             default:
                 return showit('GENERIC_DIAGRAM');
         }
-    } 
+    }
 
     var image_search_term = ""; // blank term for the Pixabay search
 
@@ -481,7 +509,7 @@ function array_to_console(array: any[], sort = true) { // prints out a one-dimen
     console.log(output);
 }
 
-function smudge(str: string, un=false) {
+function smudge(str: string, un = false) {
     const original = `-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ._~`;
     const cipher = `xv-01iuwB4j32zA5ykC67EFlf~D8egGh9HabqI_JQncRodsPpmOKLt.rNMSZWXTUYV`;
     if (un) { // unsmudge
@@ -519,6 +547,5 @@ function makeid(length: number) { // source: https://stackoverflow.com/a/1349426
     }
     return result;
 }
-
 
 export default cpblx;

@@ -54,9 +54,16 @@
             <div class="border p-3 mb-3 col-12" id="example7"></div>
 
             <button class="btn btn-success col-md-3"
-                onclick="document.getElementById('example8').innerHTML = cpblx(2,-11,cpblxoptions);">Diagram (healthcare)
+                onclick="document.getElementById('example8').innerHTML = cpblx(2,-11,cpblxoptions);">Diagram
+                (healthcare)
             </button>
             <div class="border p-3 mb-3 col-12" id="example8"></div>
+
+            <button class="btn btn-success col-md-3"
+                onclick="document.getElementById('example9').innerHTML = cpblx(7,-11,cpblxoptions);">Diagram
+                (Brexit)
+            </button>
+            <div class="border p-3 mb-3 col-12" id="example9"></div>
 
             <button class="btn btn-success col-md-3"
                 onclick="document.getElementById('example1').innerHTML = cpblx(1, 10);">
@@ -77,7 +84,7 @@
             <div class="border p-3 mb-3 col-12" id="examples"></div>
         </div>
     </div>
-    <script>
+    <script type="module">
 
         function crap(e) {
             var thebull = document.getElementById(e);
@@ -106,12 +113,71 @@
 
         const pid = getUrlParam('pid', '');
 
+        function generateSvgUrl(svg) {
+            let fileData = new Blob([svg], { type: 'image/svg+xml' });
+            let svgFileUrl = window.URL.createObjectURL(fileData);
+            return svgFileUrl;
+        }
+        function generateSvgBlob(svg) {
+            svg = svg.replace(/.*(<svg.*\/svg>).*/g, "$1");
+            let fileData = new Blob([svg], { type: 'image/svg+xml' });
+            return fileData;
+        }
+
+        function generateSvgLink(elementID = "", content = "") {
+            let area = document.getElementById(elementID);
+            let link = document.createElement("a");
+            link.setAttribute("download", "diagram.svg");
+            link.href = generateSvgUrl(content);
+            link.innerText = "download SVG";
+            area.appendChild(link);
+        }
+
+        function generatePngLink(elementID = "", content = "") {
+            let area = document.getElementById(elementID);
+            let link = document.createElement("a");
+            link.setAttribute("download", "diagram.png");
+            link.href = content;
+            link.innerText = "download PNG";
+            area.appendChild(link);
+        }
+
+        function generateSvgImg(elementID = "", content = "") {
+            let area = document.getElementById(elementID);
+            let img = document.createElement("img");
+            img.id = "svg_image";
+            let reader = new FileReader();
+            reader.readAsDataURL(generateSvgBlob(content));
+            reader.onload = function () {
+                img.src = reader.result;
+                //                console.log(img.src);
+                area.appendChild(img);
+                generateSvgLink(elementID, content);
+            };
+            // and make a canvas
+            //let canvas = document.createElement("canvas");
+            //canvas.id = "svg_canvas";
+            //area.appendChild(canvas);
+            //var ctx = canvas.getContext("2d");
+            //img.onload = () => {
+            //    ctx.drawImage(img, 0, 0);
+            //    generatePngLink("seeded", canvas.toDataURL("img/png"));
+            //}
+        }
+
         if (pid !== '') {
             cpblxoptions = '{"pid": "' + pid + '"}';
-            document.getElementById('seeded').innerHTML = cpblx(0, 0, cpblxoptions);
+//            document.getElementById('seeded').innerHTML = cpblx(0, 0, cpblxoptions);
+            var trimmedSVG = cpblx(0, 0, cpblxoptions).replace(/.*(<svg.*\/svg>).*/g, "$1");
+            console.log(trimmedSVG);
+            if (trimmedSVG.length > 0) {
+                generateSvgImg("seeded", trimmedSVG);
+//                generateSvgLink("seeded", trimmedSVG);
+            }
+            //            generatePngLink("seeded", document.getElementById('svg_image').toDataURL());
             document.getElementById('curated').classList.remove('hidden');
             document.getElementById('examplearea').classList.add('hidden');
-            document.getElementById('notsopermalink').classList.add('hidden');
+            //            document.getElementById('notsopermalink').classList.add('hidden');
         }
 
     </script>
