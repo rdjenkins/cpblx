@@ -167,17 +167,15 @@
 
         if (pid !== '') {
             cpblxoptions = '{"pid": "' + pid + '"}';
-//            document.getElementById('seeded').innerHTML = cpblx(0, 0, cpblxoptions);
-            var trimmedSVG = cpblx(0, 0, cpblxoptions).replace(/.*(<svg.*\/svg>).*/g, "$1");
-            console.log(trimmedSVG);
-            if (trimmedSVG.length > 0) {
+            var cpblxOutput = cpblx(0, 0, cpblxoptions);
+            if (cpblxOutput.includes("<svg")) { // it's a diagram
+                var trimmedSVG = cpblx(0, 0, cpblxoptions).replace(/.*(<svg.*\/svg>).*/g, "$1");
                 generateSvgImg("seeded", trimmedSVG);
-//                generateSvgLink("seeded", trimmedSVG);
+            } else {
+                document.getElementById('seeded').innerHTML = cpblxOutput;
             }
-            //            generatePngLink("seeded", document.getElementById('svg_image').toDataURL());
             document.getElementById('curated').classList.remove('hidden');
             document.getElementById('examplearea').classList.add('hidden');
-            //            document.getElementById('notsopermalink').classList.add('hidden');
         }
 
     </script>
