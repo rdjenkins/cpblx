@@ -5,8 +5,10 @@ var _cpblxrules = _interopRequireDefault(require("./dialect/cpblxrules.json"));
 // function taken from scigen.js
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-// function taken from scigen.js
+// modified function taken from scigen.js
 var generate = function generate(rules, start) {
+  var dupes = []; // an array to identify duplicated expansions
+  var counter = 0; // a counter to stop the anti-duplicate function trying to work forever
   var rx = new RegExp("^(" + Object.keys(rules).sort(function (a, b) {
     return b.length - a.length;
   }).join("|") + ")");
@@ -26,27 +28,43 @@ var generate = function generate(rules, start) {
         rules[plusRule[1]] = 1;
       }
 
-      return rules[plusRule[1]] - 1;
+      return rules[plusRule[1]]; // removed the -1
+      
     } else if (sharpRule) {
       if (sharpRule[1] in rules) {
-        return Math.floor(Math.random() * (rules[sharpRule[1]] + 1));
+        return Math.floor(Math.random() * (rules[sharpRule[1]]) + 1);
       } else {
         return 0;
       }
+      
     } else {
       var process = function process(rule) {
         var text = "";
+        var atom = ""; // the text of an expanded rule that contains no other rules within
 
         for (var i in rule) {
           var match = rule.substring(i).match(rx);
 
           if (match) {
+            if (text.length === 0) { // we are at the atomic level of expansion
+              atom = expand(match[0]);
+              if (dupes[match[0]]) {
+                while (dupes[match[0]].indexOf(atom)>-1 && counter<50) {
+                  atom = expand(match[0]);
+                  counter++; // counter to stop it hanging forever
+                  console.log('debug ... duplicate ' + atom);
+                }
+                dupes[match[0]].push(atom);
+              } else {
+                dupes[match[0]] = [atom];
+              }
+              return text + atom + process(rule.slice(text.length + match[0].length));
+            }
             return text + expand(match[0]) + process(rule.slice(text.length + match[0].length));
           } else {
             text += rule[i];
           }
         }
-
         return text;
       };
 
@@ -83,7 +101,7 @@ var prettyPrint = function prettyPrint(text) {
     if (titleMatch) {
       line = titleMatch[1] + "{" + titleMatch[7][0].toUpperCase() + (0, _titleCase.titleCase)(titleMatch[7]).slice(1) + "}";
     }
-                
+
     var cpblxTitleMatch = line.match(/<title>([^<]+)<\/title>(.*)/);
 
     if (cpblxTitleMatch) {
@@ -108,8 +126,8 @@ var prettyPrint = function prettyPrint(text) {
 };
 
 function cpblxgen(WHAT) {
-//  console.log(WHAT);
-//  console.log(generate(_cpblxrules["default"], WHAT).text);
+  //  console.log(WHAT);
+  //  console.log(generate(_cpblxrules["default"], WHAT).text);
   return generate(_cpblxrules["default"], WHAT).text;
 }
 
