@@ -76,21 +76,22 @@
             <div class="border p-3 mb-3 col-12" id="example2"></div>
 
             <button class="btn btn-success col-md-3"
-                onclick="document.getElementById('example3').innerHTML = cpblx(3,-1);">
-                Publishing - a brief bullet point</button>
+                onclick="document.getElementById('example3').innerHTML = cpblx(8,-2.1);">
+                Conspiracy - the why, the how, and the what</button>
             <div class="border p-3 mb-3 col-12" id="example3"></div>
 
             <button class="btn btn-success col-md-3" onclick="crap('examples')">Add random</button>
             <div class="border p-3 mb-3 col-12" id="examples"></div>
         </div>
     </div>
-    <script type="module">
-
+    <script>
         function crap(e) {
             var thebull = document.getElementById(e);
             thebull.innerHTML = "<p>" + cpblx() + "</p>" + thebull.innerHTML; // just keep piling on the crap
         }
 
+    </script>
+    <script type="module">
         function getUrlVars() {
             var vars = {};
             var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {

@@ -131,32 +131,38 @@ function cpblx(dialect = 0, x = 0, opt = '{}') {
         }
     }
 
+    if (x === -2.1) {
+        if (dialect === 8) {
+            return wrap_cpblxgen('CON_WHY_HOW_WHAT');
+        }
+    }
+
     function portableSVG(mermaidSVG = '') {
-            // Start heroic ugly hacking of mermaid SVG output which relies on browser CSS styling and is therefore not as portable as it could be
-            // make piechart text the same as with CSS
-            mermaidSVG = mermaidSVG.replace(/<text class="pieTitleText"([^>]*)>([^>]*)<\/text>/g, "<text $1 font-family='\"trebuchet ms\",verdana,arial,sans-serif' text-anchor='middle' font-size='25px' fill='black'>$2</text>");
-            // make piechart legend the same as with CSS
-            mermaidSVG = mermaidSVG.replace(/<g([^>]*?)class="legend"(.*?)>/g, "<g$1font-family='\"trebuchet ms\",verdana,arial,sans-serif' font-size='16px' fill='#333'$2>");
-            // make piechart area the same as with CSS
-            // need to do something about the hsl colours
-            mermaidSVG = mermaidSVG.replace(/<path([^>]*?)class="pieCircle"([^>]*?)>/g, "<path$1stroke='black' stroke-width='2px' opacity='0.7'$2>");
-            // make piechart text marks the same as with CSS
-            mermaidSVG = mermaidSVG.replace(/<text([^>]*?)class="slice"([^>]*?)>/g, "<text$1font-family='\"trebuchet ms\",verdana,arial,sans-serif' font-size='17px' fill='#333'$2>");
-            // make node text visible without CSS
-            mermaidSVG = mermaidSVG.replace(/<span class="nodeLabel">([^>]*)<\/span>/g, "<text y='19.5' font-family='\"trebuchet ms\",verdana,arial,sans-serif' font-size='16px' fill='#333'>$1</text>");
-            // make edge label visbile without CSS
-            mermaidSVG = mermaidSVG.replace(/<span class="edgeLabel">([^>]+)<\/span>/g, "<text y='19.5' font-family='\"trebuchet ms\",verdana,arial,sans-serif' font-size='16px' fill='#333' filter='url(#greybackground)'>$1</text>");
-            // remove foreignObject tags which enable CSS
-            mermaidSVG = mermaidSVG.replace(/<foreignObject[^>]*><div xmlns[^>]*>(.*?)<\/div><\/foreignObject>/g, "$1");
-            // make nodes the right colour without CSS
-            mermaidSVG = mermaidSVG.replace(/<rect(.*?)style=""(.*?)>/g, "<rect$1style='fill:#ECECFF;stroke:#9370DB;stroke-width:1px;'$2>");
-            // make the edge lines visible without CSS styling
-            mermaidSVG = mermaidSVG.replace(/style="fill:none;"/g, 'style="stroke:#121212; fill:none;"');
-            // remove CSS style sheet and add a background for edge labels
-            mermaidSVG = mermaidSVG.replace(/(<style>.*<\/style>)/,"<filter x='0' y='0' width='1' height='1' id='greybackground'><feFlood flood-color='#e8e8e8' result='bg'/><feMerge><feMergeNode in='bg'/><feMergeNode in='SourceGraphic'/></feMerge></filter>");
-            // trim the SVG
-            mermaidSVG = mermaidSVG.replace(/.*(<svg.*\/svg>).*/g, "$1");
-            return mermaidSVG;
+        // Start heroic ugly hacking of mermaid SVG output which relies on browser CSS styling and is therefore not as portable as it could be
+        // make piechart text the same as with CSS
+        mermaidSVG = mermaidSVG.replace(/<text class="pieTitleText"([^>]*)>([^>]*)<\/text>/g, "<text $1 font-family='\"trebuchet ms\",verdana,arial,sans-serif' text-anchor='middle' font-size='25px' fill='black'>$2</text>");
+        // make piechart legend the same as with CSS
+        mermaidSVG = mermaidSVG.replace(/<g([^>]*?)class="legend"(.*?)>/g, "<g$1font-family='\"trebuchet ms\",verdana,arial,sans-serif' font-size='16px' fill='#333'$2>");
+        // make piechart area the same as with CSS
+        // need to do something about the hsl colours
+        mermaidSVG = mermaidSVG.replace(/<path([^>]*?)class="pieCircle"([^>]*?)>/g, "<path$1stroke='black' stroke-width='2px' opacity='0.7'$2>");
+        // make piechart text marks the same as with CSS
+        mermaidSVG = mermaidSVG.replace(/<text([^>]*?)class="slice"([^>]*?)>/g, "<text$1font-family='\"trebuchet ms\",verdana,arial,sans-serif' font-size='17px' fill='#333'$2>");
+        // make node text visible without CSS
+        mermaidSVG = mermaidSVG.replace(/<span class="nodeLabel">([^>]*)<\/span>/g, "<text y='19.5' font-family='\"trebuchet ms\",verdana,arial,sans-serif' font-size='16px' fill='#333'>$1</text>");
+        // make edge label visbile without CSS
+        mermaidSVG = mermaidSVG.replace(/<span class="edgeLabel">([^>]+)<\/span>/g, "<text y='19.5' font-family='\"trebuchet ms\",verdana,arial,sans-serif' font-size='16px' fill='#333' filter='url(#greybackground)'>$1</text>");
+        // remove foreignObject tags which enable CSS
+        mermaidSVG = mermaidSVG.replace(/<foreignObject[^>]*><div xmlns[^>]*>(.*?)<\/div><\/foreignObject>/g, "$1");
+        // make nodes the right colour without CSS
+        mermaidSVG = mermaidSVG.replace(/<rect(.*?)style=""(.*?)>/g, "<rect$1style='fill:#ECECFF;stroke:#9370DB;stroke-width:1px;'$2>");
+        // make the edge lines visible without CSS styling
+        mermaidSVG = mermaidSVG.replace(/style="fill:none;"/g, 'style="stroke:#121212; fill:none;"');
+        // remove CSS style sheet and add a background for edge labels
+        mermaidSVG = mermaidSVG.replace(/(<style>.*<\/style>)/, "<filter x='0' y='0' width='1' height='1' id='greybackground'><feFlood flood-color='#e8e8e8' result='bg'/><feMerge><feMergeNode in='bg'/><feMergeNode in='SourceGraphic'/></feMerge></filter>");
+        // trim the SVG
+        mermaidSVG = mermaidSVG.replace(/.*(<svg.*\/svg>).*/g, "$1");
+        return mermaidSVG;
     }
 
     function showit(startpoint = 'GENERIC_DIAGRAM') {
