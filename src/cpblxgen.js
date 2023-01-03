@@ -54,6 +54,7 @@ var generate = function generate(rules, start) {
                   counter++; // counter to stop it hanging forever
                   console.log('debug ... duplicate ' + atom);
                 }
+                if (counter >= 50) { counter = 0; }
                 dupes[match[0]].push(atom);
               } else {
                 dupes[match[0]] = [atom];
