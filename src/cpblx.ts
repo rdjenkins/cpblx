@@ -24,6 +24,7 @@ import colours from './crayola';
 import dialectData from './dialect/dialects'
 import { cpblxgen } from './cpblxgen';
 import show from './diagram';
+import chart from './chart';
 
 var seedrandom = require('seedrandom');
 
@@ -41,10 +42,12 @@ function cpblx(dialect = 0, x = 0, opt = '{}') {
     if (!options.seed) { options.seed = '' }
     if (!options.pid) { options.pid = '' }
     if (!options.showlink) { options.showlink = false }
+    if (!options.SVGcontainer) { options.SVGcontainer = false }
 
     var seed = options.seed;
     var pid = options.pid;
     var showlink = options.showlink;
+    var SVGcontainer = options.SVGcontainer;
 
     // dialect or x of 0 means randomly choose
 
@@ -90,6 +93,7 @@ function cpblx(dialect = 0, x = 0, opt = '{}') {
 
     if (x === 0) {
         const quantity = new Array(
+            -12, // chart
             -11, // diagram
             -10, // Scientific abstract
             -9, // Why Case
@@ -135,6 +139,14 @@ function cpblx(dialect = 0, x = 0, opt = '{}') {
         if (dialect === 8) {
             return wrap_cpblxgen('CON_WHY_HOW_WHAT');
         }
+    }
+    
+    function showChart(elementID: string) {  
+        chart(elementID);
+    }
+
+    if (x === -12) {
+        return chart(SVGcontainer, dialect);
     }
 
     function portableSVG(mermaidSVG = '') {
