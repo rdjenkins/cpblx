@@ -1,4 +1,5 @@
 import { BarChart, LineChart } from 'chartist';
+import 'chartist/dist/index.css';
 import { cpblxgen } from './cpblxgen';
 
 function chart(elementID: string, dialect = 1) {
@@ -21,24 +22,33 @@ function chart(elementID: string, dialect = 1) {
         }
     }
 
-    if (!document.getElementById('chartistcss')) {
-        console.log('loading chartist css');
-        const newCSS = document.createElement("link");
-        newCSS.id = 'chartistcss';
-        newCSS.rel = 'stylesheet';
-        newCSS.href = 'chartist.css';
-        document.head.appendChild(newCSS);
-    } else {
-        console.log('chartist css already loaded');
+    function getDescription(d = dialect) {
+        switch (d) {
+            case 2:
+                return cpblxgen('NHS_RCT_METHOD_FILLER');
+            case 4:
+                return cpblxgen('ED_WHY_HOW_WHAT');
+            case 7:
+                return cpblxgen('BREXIT_WHY_HOW_WHAT_FILLER');
+            case 8:
+                return cpblxgen('CON_WHY_HOW_WHAT');
+            default:
+                return cpblxgen('EVAL_SEC_INTRO_A');
+        }
+    }
+
+    function truefalse(cutoff = 0.3) {
+        return (Math.random() > cutoff) ? true : false;
     }
 
     if (document.getElementById(elementID)) {
-        console.log('chartist div already exists (which is nice)');
+        // a title div for the chart
         if (!document.getElementById(elementID+'_chart_title')) {
             const titleDiv = document.createElement("div");
             titleDiv.id = elementID+'_chart_title';
             document.getElementById(elementID)?.prepend(titleDiv);    
         }
+        // the title itself
         if (document.getElementById(elementID+'_chart_titleh1')) {
             document.getElementById(elementID+'_chart_titleh1')?.remove();
         }
@@ -46,6 +56,23 @@ function chart(elementID: string, dialect = 1) {
         title.id = elementID+'_chart_titleh1';
         document.getElementById(elementID+'_chart_title')?.appendChild(title);
         title.innerHTML = getLabel(dialect);
+
+        // space for the chart itself
+        if (document.getElementById(elementID+'_chart')) {
+            document.getElementById(elementID+'_chart')?.remove();
+        }
+        var theChart = document.createElement("div");
+        theChart.id = elementID + '_chart';
+        document.getElementById(elementID)?.appendChild(theChart);
+        
+        // a description about the chart
+        if (document.getElementById(elementID+'_chart_description')) {
+            document.getElementById(elementID+'_chart_description')?.remove();
+        }
+        var description = document.createElement("p");
+        description.id = elementID+'_chart_description';
+        document.getElementById(elementID)?.appendChild(description);
+        description.innerHTML = getDescription(dialect);
     } else {
         throw new Error(elementID + ' HTML element not found');
     }
@@ -84,7 +111,7 @@ function chart(elementID: string, dialect = 1) {
             series3.sort();
         }
         new LineChart(
-            '#' + elementID,
+            '#' + elementID + '_chart',
             {
                 labels: labels,
                 series: [
@@ -96,7 +123,7 @@ function chart(elementID: string, dialect = 1) {
             {
                 low: 0,
                 height: height + 'px',
-                showArea: true,
+                showArea: truefalse(),
             }
         );
 
@@ -118,7 +145,7 @@ function chart(elementID: string, dialect = 1) {
             series1.sort();
         }
         new BarChart(
-            '#' + elementID,
+            '#' + elementID + '_chart',
             {
                 labels: labels,
                 series: [
@@ -126,7 +153,7 @@ function chart(elementID: string, dialect = 1) {
                 ]
             },
             {
-                horizontalBars: (Math.random() > 0.3) ? true : false,
+                horizontalBars: truefalse(),
                 height: height + 'px',
                 axisY: {
                     offset: 120,
