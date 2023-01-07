@@ -146,6 +146,10 @@ function cpblx(dialect = 0, x = 0, opt = '{}') {
     }
 
     if (x === -12) {
+        var element = document.getElementById(SVGcontainer);
+        if (element !== null) {
+           element.innerHTML = cpblxgen('GENERIC_POSTER');
+        }
         return chart(SVGcontainer, dialect);
     }
 
