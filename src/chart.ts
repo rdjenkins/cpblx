@@ -42,16 +42,8 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
             if (m.index === regex.lastIndex) {
                 regex.lastIndex++;
             }
-//            var titleDiv = document.createElement("div");
-//            titleDiv.id = elementID + '_chart_title' + counter;
-//            document.getElementById(elementID)?.append(titleDiv);
-//            var titleElem = document.createElement("h1");
-//            titleElem.id = elementID + '_chart_titleh1' + counter;
-//            document.getElementById(elementID + '_chart_title' + counter)?.appendChild(titleElem);
-//            titleElem.innerHTML = m[1];
             var thisChartId = elementID + '_chart' + counter;
             tempstr = tempstr.replace(/{##chartist figure## package={{title\. (.*?)} {description\. (.*?)} (.*?}})}}/, '<div id="' + thisChartId + '"></div>');
-//            str = str.replace(/{##chartist figure## package={(.*?)}}}}/m, '<div id="' + thisChartId + '"></div>');
 
             // The result can be accessed through the `m`-variable.
             chartIDs.push([thisChartId, m[1], m[2], m[3]]);
@@ -110,13 +102,13 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
         document.getElementById(elementID)?.prepend(titleDiv);
     }
     // the title itself
-    if (document.getElementById(elementID + '_chart_titleh1')) {
-        document.getElementById(elementID + '_chart_titleh1')?.remove();
+    if (document.getElementById(elementID + '_chart_titleh')) {
+        document.getElementById(elementID + '_chart_titleh')?.remove();
     }
-    var titleH1 = document.createElement("h1");
-    titleH1.id = elementID + '_chart_titleh1';
-    document.getElementById(elementID + '_chart_title')?.appendChild(titleH1);
-    titleH1.innerHTML = (title != '') ? title : getLabel(dialect);
+    var titleH = document.createElement("h2");
+    titleH.id = elementID + '_chart_titleh';
+    document.getElementById(elementID + '_chart_title')?.appendChild(titleH);
+    titleH.innerHTML = (title != '') ? title : getLabel(dialect);
 
     // space for the chart itself
     if (document.getElementById(elementID + '_chart')) {
