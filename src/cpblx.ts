@@ -521,16 +521,6 @@ function shuffle(array: any[]) {
     return array;
 }
 
-function array_to_console(array: any[], sort = true) { // prints out a one-dimensional string array
-    if (sort) { array.sort(); }
-    var output = "";
-    for (var x in array) {
-        output = output + " '" + array[x] + "',";
-    }
-    output = output.replace(/^\s+|,$/gm, ''); // remove spaces at the beginning and comma at end
-    console.log(output);
-}
-
 function smudge(str: string, un = false) {
     const original = `-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ._~`;
     const cipher = `xv-01iuwB4j32zA5ykC67EFlf~D8egGh9HabqI_JQncRodsPpmOKLt.rNMSZWXTUYV`;

@@ -54,7 +54,9 @@ var generate = function generate(rules, start) {
                   counter++; // counter to stop it hanging forever
                   console.log('debug ... duplicate ' + atom);
                 }
-                if (counter >= 50) { counter = 0; }
+                if (counter >= 50) {
+                  counter = 0;
+                }
                 dupes[match[0]].push(atom);
               } else {
                 dupes[match[0]] = [atom];
@@ -86,11 +88,11 @@ var prettyPrint = function prettyPrint(text) {
     line = line.replace(/ +/g, " ");
     line = line.replace(/\s+([.,?;:])/g, "$1");
     line = line.replace(/\ba\s+([\"']*[aeiou])/gi, "an $1"); // modified for cpblx
-    line = line.replace(/\bthe\s+(["'])*the/gi, "$1the"); // sometimes the the appears in cpblx 
+    line = line.replace(/\bthe\s+(["'])*the/gi, "$1the"); // sometimes 'the the' appears in cpblx 
     line = line.replace(/^\s*[a-z]/, function (l) {
       return l.toUpperCase();
     });
-    line = line.replace(/((([.:?!]\s+)|(=\s*\{\s*))[a-z])/g, function (l) {
+    line = line.replace(/((([.:?!]\s+)|(=\s*\{\s*)|((br)|(div))(>\s+))[a-z])/g, function (l) { // modified for cpblx
       return l.toUpperCase();
     });
     line = line.replace(/\W((jan)|(feb)|(mar)|(apr)|(jun)|(jul)|(aug)|(sep)|(oct)|(nov)|(dec))\s/gi, function (l) {

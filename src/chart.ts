@@ -1,4 +1,4 @@
-import { BarChart, LineChart } from 'chartist';
+import { BarChart, LineChart, Interpolation } from 'chartist';
 import 'chartist/dist/index.css';
 import { cpblxgen } from './cpblxgen';
 
@@ -19,7 +19,6 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
 
     // if there are charts from the SciGen output then replace them with DIV tags
     if (document.getElementById(elementID)?.innerHTML.match(/{##chartist figure## package={(.*?)}}/gm)) {
-        console.log('chartist figure detected');
 
         // in a DOM-safe way manipulate the text in the HTML element
         // and store the content in 'str'
@@ -91,8 +90,24 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
         }
     }
 
-    function truefalse(cutoff = 0.3) {
-        return (Math.random() > cutoff) ? true : false;
+    function truefalse(cutoff = 0.5) {
+        return (Math.random() > (1 - cutoff)) ? true : false;
+    }
+
+    function mostlytrue() {
+        return truefalse(0.7);
+    }
+
+    function lineChartStylePicker() {
+        var point, line, area = false;
+        var counter = 0;
+        while (!(point || line || area || counter>100)) { // counter just in case it gets stuck for some bizarre reason
+            point = truefalse();
+            line = truefalse();
+            area = truefalse();
+            counter++;
+        }
+        return {"point": point, "line": line, "area": area};
     }
 
     // a title div for the chart
@@ -145,9 +160,28 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
         }
     }
 
-//    console.log(matches);
+    if (mostlytrue()) { // mostly do a line chart
 
-    if (Math.random() > 0.3) {
+        const lineChartStyle = lineChartStylePicker();
+        var lineChartSmoothing = [Interpolation.none(), Interpolation.simple(), Interpolation.monotoneCubic(), Interpolation.cardinal()][intFromRange(0,3)];
+        if (lineChartStyle.area || lineChartStyle.line) { // 'step' smoothing only makes sense when there is an area or a line
+            if (truefalse(0.1)) { // so give step a 10% chance here
+                lineChartSmoothing = Interpolation.step();
+            }
+        }
+        // labels from cpblx are too long to look neat so replace them in the chart
+        const labelMarkers = [
+            ['i','ii','iii','iv','v','vi','vii','viii','ix','x','xi','xii','xiii','xiv'],
+            ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV'],
+            ['a','b','c','d','e','f','g','h','i','j','k','l','m','n'],
+            ['A','B','C','D','E','F','G','H','I','J','K','L','M','N'],
+        ][intFromRange(0,2)];
+
+        function choose(things = Array([''])) {
+            return things[Math.floor(Math.random() * things.length)];
+        }
+
+        var labelSeparator = choose(Array([")"], ["."], [" -"],[": "]));
 
         // pick number (the number of data matches passed or a random one)
         var n = (matches)? matches.length : intFromRange(5, 9);
@@ -159,9 +193,11 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
         var series1 = [];
         var series2 = [];
         var series3 = [];
+        var tableExplainingLabels = "<p><i>(" + title + '. <i>';
         for (let i = 0; i < n; i++) {
             if (matches) {
-                labels.push(matches[i]);
+                labels.push(labelMarkers[i]);
+                tableExplainingLabels = tableExplainingLabels + labelMarkers[i] + labelSeparator + " " + matches[i]+ ", ";
             } else {
                 labels.push(getLabel(dialect));
             }
@@ -169,6 +205,7 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
             series2.push(intFromRange(lower, upper));
             series3.push(intFromRange(lower, upper));
         }
+        tableExplainingLabels = tableExplainingLabels.replace(/,\s*$/,'.) <br>'); // trims the trailing comma (and any whitespace after)
         if (Math.random() > 0.5) {
             series1.sort();
         }
@@ -178,6 +215,10 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
         if (Math.random() > 0.5) {
             series3.sort();
         }
+
+        // add explanatory table for the labels in the chart
+        descriptionP.innerHTML = tableExplainingLabels + descriptionP.innerHTML + "</i></p>";
+
         new LineChart(
             '#' + elementID + '_chart',
             {
@@ -185,17 +226,21 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
                 series: [
                     series1,
                     series2,
-                    series3
+                    series3,
                 ]
             },
             {
                 low: 0,
                 height: height + 'px',
-                showArea: truefalse(),
+                showArea: lineChartStyle.area,
+                showLine: lineChartStyle.line,
+                showPoint: lineChartStyle.point,
+                fullWidth: true,
+                lineSmooth: lineChartSmoothing,
             }
         );
 
-    } else {
+    } else { // sometimes do a bar chart
 
         // pick number
         var n = (matches)? matches.length : intFromRange(3, 7);
@@ -225,7 +270,7 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
                 ]
             },
             {
-                horizontalBars: truefalse(),
+                horizontalBars: mostlytrue(),
                 height: height + 'px',
                 axisY: {
                     offset: 120,
