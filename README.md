@@ -90,7 +90,9 @@ cpblx(dialect, quantity, options) // define dialect, quantity, and
 
 #### Quantity
 
--11 - A diagram in SVG format (generic dialect only)
+-12 - A chart in SVG format (generic dialect only)
+
+-11 - A diagram in SVG format (some dialects only)
 
 -10 - An abstract (healthcare dialect only)
 
@@ -134,7 +136,7 @@ Move the generation mechanism to the same as used by the original nonsense gener
 
 * reformat the cpblx rules to the [original SciGen (2005)](https://github.com/strib/scigen) text format ([done](https://github.com/rdjenkins/scigen.js/blob/master/rules/rules-original/cpblxrules.in))
 * rework the rules generator files in Perl and JavaScript by adapting those from SciGen.js ([done](https://github.com/rdjenkins/scigen.js/blob/master/rules/compile-rules-cpblx.pl))
-* add the mechanism to this TypeScript Library ([in progress](https://github.com/rdjenkins/cpblx/blob/main/src/cpblxgen.js))
+* add the mechanism to this TypeScript Library ([done](https://github.com/rdjenkins/cpblx/blob/main/src/cpblxgen.js))
 
 Make use of the animals and colours somewhere.
 
