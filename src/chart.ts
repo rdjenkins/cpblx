@@ -242,6 +242,8 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
 
     } else { // sometimes do a bar chart
 
+        descriptionP.innerHTML = "<p><i>" + descriptionP.innerHTML + "</i></p>";
+
         // pick number
         var n = (matches)? matches.length : intFromRange(3, 7);
         // pick range
