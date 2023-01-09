@@ -11,10 +11,13 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
         throw new Error(elementID + ' HTML element not found');
     }
 
+    // makeChart() function sends data to chart() to draw a chart
+    // only used when we are sure there are DIV tags ready for the chart
     function makeChart(id="0", d=dialect, title='', description='', data='') {
         return chart(id, d, title, description, data);
     }
 
+    // if there are charts from the SciGen output then replace them with DIV tags
     if (document.getElementById(elementID)?.innerHTML.match(/{##chartist figure## package={(.*?)}}/gm)) {
         console.log('chartist figure detected');
 
@@ -47,13 +50,10 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
 
             // The result can be accessed through the `m`-variable.
             chartIDs.push([thisChartId, m[1], m[2], m[3]]);
-            m.forEach((match, groupIndex) => {
-                console.log(`Found match, group ${groupIndex}: ${match}`);
-            });
             counter++;
         }
         replacing.innerHTML = tempstr;
-        console.log({chartIDs});
+        // draw all the charts
         chartIDs.forEach(chartToDo => {
             makeChart(chartToDo[0], dialect, chartToDo[1], chartToDo[2], chartToDo[3]);
         });
@@ -133,10 +133,24 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
 
     var height = window.innerHeight * 0.5;
 
+    if (data !== '') {
+        const regex = /{+([^}]*)}/mg;
+        var matches = [];
+        let m;
+        while ((m = regex.exec(data)) !== null) {
+            if (m.index === regex.lastIndex) {
+                regex.lastIndex++;
+            }
+            matches.push(m[1]);
+        }
+    }
+
+//    console.log(matches);
+
     if (Math.random() > 0.3) {
 
-        // pick number
-        var n = intFromRange(5, 9);
+        // pick number (the number of data matches passed or a random one)
+        var n = (matches)? matches.length : intFromRange(5, 9);
         // pick range
         var upper = intFromRange(20, 50);
         var lower = intFromRange(0, 10);
@@ -146,7 +160,11 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
         var series2 = [];
         var series3 = [];
         for (let i = 0; i < n; i++) {
-            labels.push(getLabel(dialect));
+            if (matches) {
+                labels.push(matches[i]);
+            } else {
+                labels.push(getLabel(dialect));
+            }
             series1.push(intFromRange(lower, upper));
             series2.push(intFromRange(lower, upper));
             series3.push(intFromRange(lower, upper));
@@ -180,7 +198,7 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
     } else {
 
         // pick number
-        var n = intFromRange(3, 7);
+        var n = (matches)? matches.length : intFromRange(3, 7);
         // pick range
         var upper = intFromRange(5, 10);
         var lower = intFromRange(-3, 3);
@@ -188,7 +206,11 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
         var labels = [];
         var series1 = [];
         for (let i = 0; i < n; i++) {
-            labels.push(getLabel(dialect));
+            if (matches) {
+                labels.push(matches[i]);
+            } else {
+                labels.push(getLabel(dialect));
+            }
             series1.push(intFromRange(lower, upper));
         }
         if (Math.random() > 0.5) {
