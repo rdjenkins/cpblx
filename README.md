@@ -44,7 +44,15 @@ document.getElementById('crap').innerHTML = cpblx();
 </script>
 ```
 
-See an example [here on github](https://rdjenkins.github.io/cpblx/).
+For the chart(s) a named DIV (sent as an option) is required. e.g.
+
+```
+<button onclick='cpblx(0,-12,"{\"SVGcontainer\": \"example10\"}");'>Chart(s)
+</button>
+<div id="example10"></div>
+```
+
+See some examples [here on github](https://rdjenkins.github.io/cpblx/).
 
 View more corporate guff [on our server](https://agnate.co.uk/cpblx/). (We are working on how to get image options to work in this library).
 
