@@ -1,6 +1,23 @@
-import { BarChart, LineChart, Interpolation } from 'chartist';
+import { BarChart, LineChart, PieChart, Interpolation } from 'chartist';
 import 'chartist/dist/index.css';
 import { cpblxgen } from './cpblxgen';
+
+function intFromRange(low: number, high: number) {
+    return Math.floor(Math.random() * (1 + high - low)) + low;
+}
+
+function chooseLabellingSystem() {
+    // Further reading
+    // https://en.wikipedia.org/wiki/Note_(typography)
+    var choice = [
+        ['i','ii','iii','iv','v','vi','vii','viii','ix','x','xi','xii','xiii','xiv'],
+        ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV'],
+        ['a','b','c','d','e','f','g','h','i','j','k','l','m','n'],
+        ['A','B','C','D','E','F','G','H','I','J','K','L','M','N'],
+        ['*','†','‡','¶','§','||','#','**','††','‡‡','¶¶','§§','##','***'],
+    ];
+    return choice[intFromRange(0,choice.length - 1)];
+}
 
 function chart(elementID: string, dialect = 1, title='', description='', data='') {
     if (!elementID) {
@@ -142,10 +159,6 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
     document.getElementById(elementID)?.appendChild(descriptionP);
     descriptionP.innerHTML = (description !== '') ? description : getDescription(dialect);
 
-    function intFromRange(low: number, high: number) {
-        return Math.floor(Math.random() * (1 + high - low)) + low;
-    }
-
     var height = window.innerHeight * 0.5;
 
     if (data !== '') {
@@ -170,12 +183,7 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
             }
         }
         // labels from cpblx are too long to look neat so replace them in the chart
-        const labelMarkers = [
-            ['i','ii','iii','iv','v','vi','vii','viii','ix','x','xi','xii','xiii','xiv'],
-            ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV'],
-            ['a','b','c','d','e','f','g','h','i','j','k','l','m','n'],
-            ['A','B','C','D','E','F','G','H','I','J','K','L','M','N'],
-        ][intFromRange(0,2)];
+        const labelMarkers = chooseLabellingSystem();
 
         function choose(things = Array([''])) {
             return things[Math.floor(Math.random() * things.length)];
@@ -240,7 +248,65 @@ function chart(elementID: string, dialect = 1, title='', description='', data=''
             }
         );
 
-    } else { // sometimes do a bar chart
+    } else if(truefalse()) { // do a donut chart
+
+        // labels from cpblx are too long to look neat so replace them in the chart
+        const labelMarkers = chooseLabellingSystem();
+
+        function choose(things = Array([''])) {
+            return things[Math.floor(Math.random() * things.length)];
+        }
+
+        var labelSeparator = choose(Array([")"], ["."], [" -"],[": "]));
+
+        // pick number (the number of data matches passed or a random one)
+        var n = (matches)? matches.length : intFromRange(5, 9);
+        // pick range
+        var upper = intFromRange(20, 50);
+        var lower = intFromRange(0, 10);
+        // generate n labels and data points
+        var labels = [];
+        var series1 = [];
+        var seriesTotal = 0;
+        let dataPoint;
+        var tableExplainingLabels = "<p><i>(" + title + '. <i>';
+        for (let i = 0; i < n; i++) {
+            if (matches) {
+                labels.push(labelMarkers[i]);
+                tableExplainingLabels = tableExplainingLabels + labelMarkers[i] + labelSeparator + " " + matches[i]+ ", ";
+            } else {
+                labels.push(getLabel(dialect));
+            }
+            dataPoint = intFromRange(lower, upper);
+            seriesTotal = seriesTotal + dataPoint;
+            series1.push(dataPoint);
+        }
+        tableExplainingLabels = tableExplainingLabels.replace(/,\s*$/,'.) <br>'); // trims the trailing comma (and any whitespace after)
+        if (Math.random() > 0.5) {
+            series1.sort();
+        }
+
+        // add explanatory table for the labels in the chart
+        descriptionP.innerHTML = tableExplainingLabels + descriptionP.innerHTML + "</i></p>";
+
+
+        new PieChart(
+            '#' + elementID + '_chart',
+            {
+              series: series1,
+              labels: labels,
+            },
+            {
+              donut: true,
+//              labelPosition: truefalse() ? 'inside' : 'outside',
+              total: truefalse() ? seriesTotal : seriesTotal * 2, // * 2 draws a gauge chart
+              donutWidth: truefalse() ? '50%' : '30%',
+              startAngle: 270,
+              showLabel: true
+            }
+          );
+    }
+    else { // a bar chart
 
         descriptionP.innerHTML = "<p><i>" + descriptionP.innerHTML + "</i></p>";
 

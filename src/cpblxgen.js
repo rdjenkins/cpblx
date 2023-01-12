@@ -52,7 +52,7 @@ var generate = function generate(rules, start) {
                 while (dupes[match[0]].indexOf(atom)>-1 && counter<50) {
                   atom = expand(match[0]);
                   counter++; // counter to stop it hanging forever
-                  console.log('debug ... duplicate ' + atom);
+//                  console.log('debug ... duplicate ' + atom);
                 }
                 if (counter >= 50) {
                   counter = 0;
