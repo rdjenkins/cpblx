@@ -140,15 +140,18 @@ function cpblx(dialect = 0, x = 0, opt = '{}') {
             return wrap_cpblxgen('CON_WHY_HOW_WHAT');
         }
     }
-    
-    function showChart(elementID: string) {  
-        chart(elementID);
-    }
 
     if (x === -12) {
         var element = document.getElementById(SVGcontainer);
         if (element !== null) {
-           element.innerHTML = cpblxgen('GENERIC_POSTER');
+            if (dialect > 7) { dialect = 7; } // to share the randomness out
+            switch (dialect) {
+                case 7:
+                    element.innerHTML = cpblxgen('BREXIT_POSTER');
+                    break;
+                default:
+                    element.innerHTML = cpblxgen('GENERIC_POSTER');
+            }
         }
         return chart(SVGcontainer, dialect);
     }

@@ -1,6 +1,6 @@
 {
     "name": "cpblxjs",
-    "version": "1.5.4",
+    "version": "1.5.5",
     "description": "A corporate bollox generator",
     "main": "index.ts",
     "scripts": {
