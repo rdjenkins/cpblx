@@ -21,7 +21,7 @@ function chooseLabellingSystem() {
 
 function chart(elementID: string, dialect = 1, title='', description='', data='') {
     if (!elementID) {
-        throw new Error("missing SVGcontainer HTML element in chart()");
+        throw new Error("missing target HTML element for chart()");
     }
 
     if (!document.getElementById(elementID)) {

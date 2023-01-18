@@ -65,12 +65,29 @@
             </button>
             <div class="border p-3 mb-3 col-12" id="example9"></div>
 
-            <button class="btn btn-success col-md-3"
-            onclick='cpblx(0,-12,"{\"SVGcontainer\": \"example10\"}");'>Chart(s)
-        </button>
-        <div class="border p-3 mb-3 col-12" id="example10"></div>
+            <button class="btn btn-success col-md-3" onclick='cpblx(0,-12,"{\"target\": \"example10\"}");'>Chart(s)
+            </button>
+            <div id="thecharts">
+                <div class="border p-3 mb-3 col-12" id="example10"></div>
+            </div>
+            <!-- Test Area -->
 
-            
+            <div>
+                <button class="btn btn-warning my-3 col-md-3" id="exportPDF">Download Chart(s) as PDF</button>
+            </div>
+            <!-- html2pdf 0.8 seems to work but not 0.10 -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js"
+                integrity="sha512-w3u9q/DeneCSwUDjhiMNibTRh/1i/gScBVp2imNVAMCt6cUHIw6xzhzcPFIaL3Q1EbI2l+nu17q2aLJJLo4ZYg=="
+                crossorigin="anonymous" referrerpolicy="no-referrer">
+            </script>
+            <script>
+                let htmlPDF = document.getElementById("thecharts");
+                let exportPDF = document.getElementById("exportPDF");
+                exportPDF.onclick = (e) => html2pdf(htmlPDF);
+            </script>
+
+            <!-- /Test Area -->
+
             <button class="btn btn-success col-md-3"
                 onclick="document.getElementById('example1').innerHTML = cpblx(1, 10);">
                 General techno-optimistic - 10 sentences</button>
@@ -88,8 +105,10 @@
 
             <button class="btn btn-success col-md-3" onclick="crap('examples')">Add random</button>
             <div class="border p-3 mb-3 col-12" id="examples"></div>
+
         </div>
     </div>
+
     <script>
         function crap(e) {
             var thebull = document.getElementById(e);

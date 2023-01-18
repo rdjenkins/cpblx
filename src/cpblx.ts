@@ -24,7 +24,7 @@ import colours from './crayola';
 import dialectData from './dialect/dialects'
 import { cpblxgen } from './cpblxgen';
 import show from './diagram';
-import chart from './chart';
+import chart2 from './chart2';
 
 var seedrandom = require('seedrandom');
 
@@ -42,12 +42,12 @@ function cpblx(dialect = 0, x = 0, opt = '{}') {
     if (!options.seed) { options.seed = '' }
     if (!options.pid) { options.pid = '' }
     if (!options.showlink) { options.showlink = false }
-    if (!options.SVGcontainer) { options.SVGcontainer = false }
+    if (!options.target) { options.target = false } // the target DOM element for chartist
 
     var seed = options.seed;
     var pid = options.pid;
     var showlink = options.showlink;
-    var SVGcontainer = options.SVGcontainer;
+    var target = options.target;
 
     // dialect or x of 0 means randomly choose
 
@@ -142,18 +142,21 @@ function cpblx(dialect = 0, x = 0, opt = '{}') {
     }
 
     if (x === -12) {
-        var element = document.getElementById(SVGcontainer);
+        var element = document.getElementById(target);
+        var output = '';
         if (element !== null) {
             if (dialect > 7) { dialect = 7; } // to share the randomness out
             switch (dialect) {
                 case 7:
-                    element.innerHTML = cpblxgen('BREXIT_POSTER');
+                    output = cpblxgen('BREXIT_POSTER');
+                    //element.innerHTML = cpblxgen('BREXIT_POSTER');
                     break;
                 default:
-                    element.innerHTML = cpblxgen('GENERIC_POSTER');
+                    output = cpblxgen('GENERIC_POSTER');
+                    //element.innerHTML = cpblxgen('GENERIC_POSTER');
             }
         }
-        return chart(SVGcontainer, dialect);
+        return chart2(target, output, dialect);
     }
 
     function portableSVG(mermaidSVG = '') {
