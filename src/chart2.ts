@@ -143,21 +143,7 @@ function chart2(elementID: string, output = '', dialect = 1, title = '', descrip
         element.setAttribute('style', 'width: ' + canvasWidth + 'px;');
     }
 
-
-    // a title div for the chart
-    if (!document.getElementById(elementID + '_chart_title')) {
-        const titleDiv = document.createElement("div");
-        titleDiv.id = elementID + '_chart_title';
-        document.getElementById(elementID)?.prepend(titleDiv);
-    }
-    // the title itself
-    if (document.getElementById(elementID + '_chart_titleh')) {
-        document.getElementById(elementID + '_chart_titleh')?.remove();
-    }
-    var titleH = document.createElement("h2");
-    titleH.id = elementID + '_chart_titleh';
-    document.getElementById(elementID + '_chart_title')?.appendChild(titleH);
-    titleH.innerHTML = (title != '') ? title : getLabel(dialect);
+    title = (title != '') ? title : getLabel(dialect);
 
     // space for the chart itself
     if (document.getElementById(elementID + '_chart')) {
@@ -232,10 +218,12 @@ function chart2(elementID: string, output = '', dialect = 1, title = '', descrip
     // and the use of multiline conditional operators is because
     // the type can't be easily assigned with a string 
 
+    var fill = truefalse(); // for line charts
+
     new Chart(elementID + '_chart', {
         type: truefalse(0.3) ? 'bar' : 
                 truefalse(0.1) ? 'polarArea' :
-                    truefalse(0.4) ? 'line' : 
+                    truefalse(0.6) ? 'line' : 
                         truefalse(0.3) ? 'radar' :
                             truefalse(0.2) ? 'doughnut' : 'pie',
         data: {
@@ -243,20 +231,31 @@ function chart2(elementID: string, output = '', dialect = 1, title = '', descrip
             datasets: [{
                 label: series1label,
                 data: series1,
-                borderWidth: intFromRange(1,3)
+                borderWidth: intFromRange(1,3),
+                cubicInterpolationMode: truefalse() ? 'monotone' : 'default',
+                fill: fill,
             },
             {
                 label: series2label,
                 data: series2,
-                borderWidth: intFromRange(1,3)
+                borderWidth: intFromRange(1,3),
+                cubicInterpolationMode: truefalse() ? 'monotone' : 'default',
+                fill: fill,
             }]
         },
         options: {
+            indexAxis: truefalse() ? 'x': 'y',
             scales: {
                 y: {
                     beginAtZero: truefalse()
                 }
-            }
+            },
+            plugins: {
+                title: {
+                  display: true,
+                  text: title,
+                }
+              }
         }
     });
 }

@@ -1,5 +1,5 @@
 import cpblx from './cpblx';
 
-console.log("cpblx v1.5.6 loaded");
+console.log("cpblx v1.5.7 loaded");
 
 export default cpblx;
