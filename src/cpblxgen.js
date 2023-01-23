@@ -1,14 +1,13 @@
 
 var _cpblxrules = _interopRequireDefault(require("./dialect/cpblxrules.json"));
-
+var dupes = []; // an array to identify duplicated expansions
+var counter = 0; // a counter to stop the anti-duplicate function trying to work forever
 
 // function taken from scigen.js
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 // modified function taken from scigen.js
 var generate = function generate(rules, start) {
-  var dupes = []; // an array to identify duplicated expansions
-  var counter = 0; // a counter to stop the anti-duplicate function trying to work forever
   var rx = new RegExp("^(" + Object.keys(rules).sort(function (a, b) {
     return b.length - a.length;
   }).join("|") + ")");
@@ -52,12 +51,14 @@ var generate = function generate(rules, start) {
                 while (dupes[match[0]].indexOf(atom)>-1 && counter<50) {
                   atom = expand(match[0]);
                   counter++; // counter to stop it hanging forever
-//                  console.log('debug ... duplicate ' + atom);
-                }
-                if (counter >= 50) {
-                  counter = 0;
+//                  console.log('debug ... duplicate (' + counter + ')' + atom);
                 }
                 dupes[match[0]].push(atom);
+                if (counter >= 50) { 
+                  counter = 0; 
+                  dupes = [];
+//                  console.log('debug ... dupes reset');
+                }
               } else {
                 dupes[match[0]] = [atom];
               }
@@ -89,7 +90,7 @@ var prettyPrint = function prettyPrint(text) {
     line = line.replace(/\s+([.,?;:])/g, "$1");
     line = line.replace(/\ba\s+([\"']*[aeiou])/gi, "an $1"); // modified for cpblx
     line = line.replace(/\bthe\s+(["'])*the/gi, "$1the"); // sometimes 'the the' appears in cpblx 
-    line = line.replace(/^\s*[a-z]/, function (l) {
+    line = line.replace(/^\s*\'*[a-z]/, function (l) { // modified for cpblx
       return l.toUpperCase();
     });
     line = line.replace(/((([.:?!]\s+)|(=\s*\{\s*)|((br)|(div))(>\s+))[a-z])/g, function (l) { // modified for cpblx
