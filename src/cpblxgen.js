@@ -89,7 +89,7 @@ var prettyPrint = function prettyPrint(text) {
     line = line.replace(/ +/g, " ");
     line = line.replace(/\s+([.,?;:])/g, "$1");
     line = line.replace(/\ba\s+([\"']*[aeiou])/gi, "an $1"); // modified for cpblx
-    line = line.replace(/\bthe\s+(["'])*the/gi, "$1the"); // sometimes 'the the' appears in cpblx 
+    line = line.replace(/\bthe\s+(["'])*(the|a|an)\s+/gi, "$1the "); // sometimes 'the the' or 'the a' appears in cpblx
     line = line.replace(/^\s*\'*[a-z]/, function (l) { // modified for cpblx
       return l.toUpperCase();
     });
