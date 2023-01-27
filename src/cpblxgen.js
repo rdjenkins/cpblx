@@ -7,11 +7,11 @@ var rx = new RegExp("^(" + Object.keys(rules).sort(function (a, b) {
   return b.length - a.length;
 }).join("|") + ")");
 
-var debug=false;
+var debug = false;
 function debuglog(text) {
-        if (debug===true) {
-                console.log(process_count + ') ' + text);
-        }
+  if (debug === true) {
+    console.log(process_count + ') ' + text);
+  }
 }
 
 // function taken from scigen.js
@@ -19,96 +19,95 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 // heroic and exhaustive check duplications method
 var checkDupe = function checkDupe(picked, key) {
-        if (dupes[key]) {
-                if (dupes[key].indexOf(picked)>-1) {
-//                        debuglog('duplicate ' + picked + ' in ' + key + ' [' + dupes[key] + ']');
-//                        debuglog('... number chosen for ' + key + ' = ' + dupes[key].length);
-//                        debuglog('... number available for ' + key + ' = ' + rules[key].length);
-                        if (dupes[key].length < rules[key].length) {
-//                                debuglog('... will choose again for ' + key);
-                        } else {
-//                                debuglog('... all choices taken for ' + key);
-//                                debuglog('... emptying dupe tracker for ' + key);
-                                dupes[key] = [];
-                        }
-                        return true; // another pick is needed
-                } else {
-                        dupes[key].push(picked);
-//                        debuglog("new " + picked + ' for ' + key + ' [' + dupes[key] + ']');
-                }
-        } else {
-                dupes[key] = [picked];
-//                debuglog("new dupe tracker for " + key);
-//                debuglog("new " + picked + ' for ' + key + ' [' + dupes[key] + ']');
-        }
-        return false; // no need for another pick
+  if (dupes[key]) {
+    if (dupes[key].indexOf(picked) > -1) {
+      //                        debuglog('duplicate ' + picked + ' in ' + key + ' [' + dupes[key] + ']');
+      //                        debuglog('... number chosen for ' + key + ' = ' + dupes[key].length);
+      //                        debuglog('... number available for ' + key + ' = ' + rules[key].length);
+      if (dupes[key].length < rules[key].length) {
+        //                                debuglog('... will choose again for ' + key);
+      } else {
+        //                                debuglog('... all choices taken for ' + key);
+        //                                debuglog('... emptying dupe tracker for ' + key);
+        dupes[key] = [];
+      }
+      return true; // another pick is needed
+    } else {
+      dupes[key].push(picked);
+      //                        debuglog("new " + picked + ' for ' + key + ' [' + dupes[key] + ']');
+    }
+  } else {
+    dupes[key] = [picked];
+    //                debuglog("new dupe tracker for " + key);
+    //                debuglog("new " + picked + ' for ' + key + ' [' + dupes[key] + ']');
+  }
+  return false; // no need for another pick
 
 }
 
 // function taken from scigen.js and separated out
-  var pick = function pick(key) {
-    var array = rules[key];
-    var picked = array[Math.floor(Math.random() * array.length)];
-//    debuglog('picked = ' + picked + ' from ' + key);
-    if (checkDupe(picked,key) && counter<50) {
-        counter++; // just a precaution to prevent stack overflow
-        return pick(key);
-    }
-    if (counter>=50) {
-//        debuglog('counter reset at ' + picked + ' from ' + key);
-        counter = 0;
-    }
-    return picked;
-  };
+var pick = function pick(key) {
+  var array = rules[key];
+  var picked = array[Math.floor(Math.random() * array.length)];
+  //    debuglog('picked = ' + picked + ' from ' + key);
+  if (checkDupe(picked, key) && counter < 50) {
+    counter++; // just a precaution to prevent stack overflow
+    return pick(key);
+  }
+  if (counter >= 50) {
+    //        debuglog('counter reset at ' + picked + ' from ' + key);
+    counter = 0;
+  }
+  return picked;
+};
 
 // function taken from scigen.js and separated out
-  var expand = function expand(key) {
+var expand = function expand(key) {
 
-    var plusRule = key.match(/(.*)[+]$/);
-    var sharpRule = key.match(/(.*)[#]$/);
+  var plusRule = key.match(/(.*)[+]$/);
+  var sharpRule = key.match(/(.*)[#]$/);
 
-    if (plusRule) {
-      if (plusRule[1] in rules) {
-        rules[plusRule[1]] += 1;
-      } else {
-        rules[plusRule[1]] = 1;
-      }
-
-      return rules[plusRule[1]]; // removed the -1
-      
-    } else if (sharpRule) {
-      if (sharpRule[1] in rules) {
-        return Math.floor(Math.random() * (rules[sharpRule[1]]) + 1);
-      } else {
-        return 0;
-      }
-      
+  if (plusRule) {
+    if (plusRule[1] in rules) {
+      rules[plusRule[1]] += 1;
     } else {
-//    debuglog("process ... " + key);
-      return process(pick(key));
+      rules[plusRule[1]] = 1;
     }
-  };
+
+    return rules[plusRule[1]]; // removed the -1
+
+  } else if (sharpRule) {
+    if (sharpRule[1] in rules) {
+      return Math.floor(Math.random() * (rules[sharpRule[1]]) + 1);
+    } else {
+      return 0;
+    }
+
+  } else {
+    //    debuglog("process ... " + key);
+    return process(pick(key));
+  }
+};
 
 // function taken from scigen.js and separated out
-      var process = function process(rule) {
-//        debuglog('processing ' + rule);
-        var text = "";
+var process = function process(rule) {
+  //        debuglog('processing ' + rule);
+  var text = "";
+  for (var i in rule) { // go along the rule (text) to see if there's another inside
+    var match = rule.substring(i).match(rx); // is there one at this point?
+    process_count++;
+    //          debuglog(process_count);
+    if (match) {
+      return text + expand(match[0]) + process(rule.slice(text.length + match[0].length));
+    } else {
+      //            debuglog('.. ' + rule.substring(i));
+      text += rule[i];
+    }
+  }
+  //            debuglog('final text = ' + text);
+  return text;
+};
 
-        for (var i in rule) { // go along the rule (text) to see if there's another inside
-          var match = rule.substring(i).match(rx); // is there one at this point?
-          process_count++;
-//          debuglog(process_count);
-          if (match) {
-            return text + expand(match[0]) + process(rule.slice(text.length + match[0].length));            
-          } else {
-//            debuglog('.. ' + rule.substring(i));
-            text += rule[i];
-          }
-        }
-//            debuglog('final text = ' + text);
-        return text;
-      };
-      
 
 // function taken from scigen.js
 var prettyPrint = function prettyPrint(text) {
@@ -149,19 +148,19 @@ var prettyPrint = function prettyPrint(text) {
     }
 
     // special replacement code for {{{today}}} etc.
-    line = line.replace(/{{{([^}]+)}}}/g, function(d) {
-            if (d === "{{{today}}}") {
-              var thedate = new Date();
-              var theday = thedate.getDay();
-              d = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][theday];
+    line = line.replace(/{{{([^}]+)}}}/g, function (d) {
+      if (d === "{{{today}}}") {
+        var thedate = new Date();
+        var theday = thedate.getDay();
+        d = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][theday];
       }
       if (d === "{{{thismonth}}}") {
-              var thedate = new Date();
-              var themonth = thedate.getMonth();
-              d = ['January','February','March','April','May','June','July','August','September','October','November','December'][themonth];
+        var thedate = new Date();
+        var themonth = thedate.getMonth();
+        d = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][themonth];
       }
       return d;
-  });
+    });
 
     if (line.match(/\n$/)) {
       line += "\n";
@@ -172,18 +171,25 @@ var prettyPrint = function prettyPrint(text) {
   return text;
 };
 
+function reset_vars() {
+  dupes = [];
+  counter = 0;
+  process_count = 0;
+}
+
 // modified function taken from scigen.js and separated out
 var generate = function generate(start) {
-  return {
-    text: prettyPrint(expand(start)),
-  };
+  reset_vars(); // The browser may keep these between runs so reset them.
+  var output = prettyPrint(expand(start));
+//  debuglog('completed in ' + process_count + ' cycles');
+  return output;
 };
+
 
 function cpblxgen(WHAT) {
   //  console.log(WHAT);
   //  console.log(generate(_cpblxrules["default"], WHAT).text);
-  dupes = []; // in the browser this is kept so reset it every run
-  return generate(WHAT).text;
+  return generate(WHAT);
 }
 
 // cpblxgen('ENT_THE_WHY');
