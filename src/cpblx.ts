@@ -113,7 +113,8 @@ function cpblx(dialect = 0, x = 0, opt = '{}') {
 
     //    const link = ' <a href="?dialect=' + dialect + '&quantity=' + x + '&seed=' + crap_id + '&pid=' + smudge(dialect + '|' + x + '|' + crap_id) + '" id="notsopermalink">link</a>';
     const link = (showlink) ? ' <a href="?pid=' + smudge(dialect + '~' + x + '~' + crap_id) + '" id="notsopermalink">link</a>'
-        : '<div id="notsopermalink"></div>';
+//        : '<div id="notsopermalink"></div>';
+        : '';
 
     function wrap_cpblxgen(start = '') {
         return cpblxgen(start) + link;
@@ -127,6 +128,13 @@ function cpblx(dialect = 0, x = 0, opt = '{}') {
                 return wrap_cpblxgen('WHY_CASE');
         }
     }
+
+    if (x === -5) {
+        if (dialect === 1) {
+            return wrap_cpblxgen('GENERIC_TWEET');
+        }
+    }
+
 
     if (x === -10) {
         switch (dialect) {

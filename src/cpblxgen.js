@@ -1,21 +1,68 @@
 
-var _cpblxrules = _interopRequireDefault(require("./dialect/cpblxrules.json"));
+var rules = _interopRequireDefault(require("./dialect/cpblxrules.json"))["default"];
 var dupes = []; // an array to identify duplicated expansions
 var counter = 0; // a counter to stop the anti-duplicate function trying to work forever
+var process_count = 0;
+var rx = new RegExp("^(" + Object.keys(rules).sort(function (a, b) {
+  return b.length - a.length;
+}).join("|") + ")");
+
+var debug=false;
+function debuglog(text) {
+        if (debug===true) {
+                console.log(process_count + ') ' + text);
+        }
+}
 
 // function taken from scigen.js
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-// modified function taken from scigen.js
-var generate = function generate(rules, start) {
-  var rx = new RegExp("^(" + Object.keys(rules).sort(function (a, b) {
-    return b.length - a.length;
-  }).join("|") + ")");
+// heroic and exhaustive check duplications method
+var checkDupe = function checkDupe(picked, key) {
+        if (dupes[key]) {
+                if (dupes[key].indexOf(picked)>-1) {
+                        debuglog('duplicate ' + picked + ' in ' + key + ' [' + dupes[key] + ']');
+                        debuglog('... number chosen for ' + key + ' = ' + dupes[key].length);
+                        debuglog('... number available for ' + key + ' = ' + rules[key].length);
+                        if (dupes[key].length < rules[key].length) {
+                                debuglog('... will choose again for ' + key);
+                        } else {
+                                debuglog('... all choices taken for ' + key);
+                                debuglog('... emptying dupe tracker for ' + key);
+                                dupes[key] = [];
+                        }
+                        return true; // another pick is needed
+                } else {
+                        dupes[key].push(picked);
+                        debuglog("new " + picked + ' for ' + key + ' [' + dupes[key] + ']');
+                }
+        } else {
+                dupes[key] = [picked];
+                debuglog("new dupe tracker for " + key);
+                debuglog("new " + picked + ' for ' + key + ' [' + dupes[key] + ']');
+        }
+        return false; // no need for another pick
 
+}
+
+// function taken from scigen.js and separated out
+  var pick = function pick(key) {
+    var array = rules[key];
+    var picked = array[Math.floor(Math.random() * array.length)];
+    debuglog('picked = ' + picked + ' from ' + key);
+    if (checkDupe(picked,key) && counter<50) {
+        counter++; // just a precaution to prevent stack overflow
+        return pick(key);
+    }
+    if (counter>=50) {
+        debuglog('counter reset at ' + picked + ' from ' + key);
+        counter = 0;
+    }
+    return picked;
+  };
+
+// function taken from scigen.js and separated out
   var expand = function expand(key) {
-    var pick = function pick(array) {
-      return array[Math.floor(Math.random() * array.length)];
-    };
 
     var plusRule = key.match(/(.*)[+]$/);
     var sharpRule = key.match(/(.*)[#]$/);
@@ -37,50 +84,32 @@ var generate = function generate(rules, start) {
       }
       
     } else {
-      var process = function process(rule) {
-        var text = "";
-        var atom = ""; // the text of an expanded rule that contains no other rules within
-
-        for (var i in rule) {
-          var match = rule.substring(i).match(rx);
-
-          if (match) {
-            if (text.length === 0) { // we are at the atomic level of expansion
-              atom = expand(match[0]);
-              if (dupes[match[0]]) {
-                while (dupes[match[0]].indexOf(atom)>-1 && counter<50) {
-                  atom = expand(match[0]);
-                  counter++; // counter to stop it hanging forever
-//                  console.log('debug ... duplicate (' + counter + ')' + atom);
-                }
-                dupes[match[0]].push(atom);
-                if (counter >= 50) { 
-                  counter = 0; 
-                  dupes = [];
-//                  console.log('debug ... dupes reset');
-                }
-              } else {
-                dupes[match[0]] = [atom];
-              }
-              return text + atom + process(rule.slice(text.length + match[0].length));
-            }
-            return text + expand(match[0]) + process(rule.slice(text.length + match[0].length));
-          } else {
-            text += rule[i];
-          }
-        }
-        return text;
-      };
-
-      return process(pick(rules[key]));
+    debuglog("process ... " + key);
+      return process(pick(key));
     }
   };
 
-  return {
-    text: prettyPrint(expand(start)),
-    rules: rules
-  };
-};
+// function taken from scigen.js and separated out
+      var process = function process(rule) {
+        debuglog('processing ' + rule);
+        var text = "";
+        var atom = ""; // the text of an expanded rule that contains no other rules within
+
+        for (var i in rule) { // go along the rule (text) to see if there's another inside
+          var match = rule.substring(i).match(rx); // is there one at this point?
+          process_count++;
+//          debuglog(process_count);
+          if (match) {
+            return text + expand(match[0]) + process(rule.slice(text.length + match[0].length));            
+          } else {
+//            debuglog('.. ' + rule.substring(i));
+            text += rule[i];
+          }
+        }
+            debuglog('final text = ' + text);
+        return text;
+      };
+      
 
 // function taken from scigen.js
 var prettyPrint = function prettyPrint(text) {
@@ -89,7 +118,7 @@ var prettyPrint = function prettyPrint(text) {
     line = line.replace(/ +/g, " ");
     line = line.replace(/\s+([.,?;:])/g, "$1");
     line = line.replace(/\ba\s+([\"']*[aeiou])/gi, "an $1"); // modified for cpblx
-    line = line.replace(/\bthe\s+(["'])*(the|a|an)\s+/gi, "$1the "); // sometimes 'the the' or 'the a' appears in cpblx
+    line = line.replace(/\bthe\s+(["'])*((the)|(a)|(an))\s+/gi, "$1the "); // sometimes 'the the' or 'the a' appears in cpblx 
     line = line.replace(/^\s*\'*[a-z]/, function (l) { // modified for cpblx
       return l.toUpperCase();
     });
@@ -120,6 +149,21 @@ var prettyPrint = function prettyPrint(text) {
       line = "<strong>" + thistitle + "</strong>" + cpblxTitleMatch[2];
     }
 
+    // special replacement code for {{{today}}} etc.
+    line = line.replace(/{{{([^}]+)}}}/g, function(d) {
+            if (d === "{{{today}}}") {
+              var thedate = new Date();
+              var theday = thedate.getDay();
+              d = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][theday];
+      }
+      if (d === "{{{thismonth}}}") {
+              var thedate = new Date();
+              var themonth = thedate.getMonth();
+              d = ['January','February','March','April','May','June','July','August','September','October','November','December'][themonth];
+      }
+      return d;
+  });
+
     if (line.match(/\n$/)) {
       line += "\n";
     }
@@ -129,10 +173,18 @@ var prettyPrint = function prettyPrint(text) {
   return text;
 };
 
+// modified function taken from scigen.js and separated out
+var generate = function generate(start) {
+  return {
+    text: prettyPrint(expand(start)),
+  };
+};
+
 function cpblxgen(WHAT) {
   //  console.log(WHAT);
   //  console.log(generate(_cpblxrules["default"], WHAT).text);
-  return generate(_cpblxrules["default"], WHAT).text;
+  dupes = []; // in the browser this is kept so reset it every run
+  return generate(WHAT).text;
 }
 
 // cpblxgen('ENT_THE_WHY');
