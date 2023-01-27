@@ -21,25 +21,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var checkDupe = function checkDupe(picked, key) {
         if (dupes[key]) {
                 if (dupes[key].indexOf(picked)>-1) {
-                        debuglog('duplicate ' + picked + ' in ' + key + ' [' + dupes[key] + ']');
-                        debuglog('... number chosen for ' + key + ' = ' + dupes[key].length);
-                        debuglog('... number available for ' + key + ' = ' + rules[key].length);
+//                        debuglog('duplicate ' + picked + ' in ' + key + ' [' + dupes[key] + ']');
+//                        debuglog('... number chosen for ' + key + ' = ' + dupes[key].length);
+//                        debuglog('... number available for ' + key + ' = ' + rules[key].length);
                         if (dupes[key].length < rules[key].length) {
-                                debuglog('... will choose again for ' + key);
+//                                debuglog('... will choose again for ' + key);
                         } else {
-                                debuglog('... all choices taken for ' + key);
-                                debuglog('... emptying dupe tracker for ' + key);
+//                                debuglog('... all choices taken for ' + key);
+//                                debuglog('... emptying dupe tracker for ' + key);
                                 dupes[key] = [];
                         }
                         return true; // another pick is needed
                 } else {
                         dupes[key].push(picked);
-                        debuglog("new " + picked + ' for ' + key + ' [' + dupes[key] + ']');
+//                        debuglog("new " + picked + ' for ' + key + ' [' + dupes[key] + ']');
                 }
         } else {
                 dupes[key] = [picked];
-                debuglog("new dupe tracker for " + key);
-                debuglog("new " + picked + ' for ' + key + ' [' + dupes[key] + ']');
+//                debuglog("new dupe tracker for " + key);
+//                debuglog("new " + picked + ' for ' + key + ' [' + dupes[key] + ']');
         }
         return false; // no need for another pick
 
@@ -49,13 +49,13 @@ var checkDupe = function checkDupe(picked, key) {
   var pick = function pick(key) {
     var array = rules[key];
     var picked = array[Math.floor(Math.random() * array.length)];
-    debuglog('picked = ' + picked + ' from ' + key);
+//    debuglog('picked = ' + picked + ' from ' + key);
     if (checkDupe(picked,key) && counter<50) {
         counter++; // just a precaution to prevent stack overflow
         return pick(key);
     }
     if (counter>=50) {
-        debuglog('counter reset at ' + picked + ' from ' + key);
+//        debuglog('counter reset at ' + picked + ' from ' + key);
         counter = 0;
     }
     return picked;
@@ -84,16 +84,15 @@ var checkDupe = function checkDupe(picked, key) {
       }
       
     } else {
-    debuglog("process ... " + key);
+//    debuglog("process ... " + key);
       return process(pick(key));
     }
   };
 
 // function taken from scigen.js and separated out
       var process = function process(rule) {
-        debuglog('processing ' + rule);
+//        debuglog('processing ' + rule);
         var text = "";
-        var atom = ""; // the text of an expanded rule that contains no other rules within
 
         for (var i in rule) { // go along the rule (text) to see if there's another inside
           var match = rule.substring(i).match(rx); // is there one at this point?
@@ -106,7 +105,7 @@ var checkDupe = function checkDupe(picked, key) {
             text += rule[i];
           }
         }
-            debuglog('final text = ' + text);
+//            debuglog('final text = ' + text);
         return text;
       };
       
