@@ -133,6 +133,9 @@ function cpblx(dialect = 0, x = 0, opt = '{}') {
         if (dialect === 1) {
             return wrap_cpblxgen('GENERIC_TWEET');
         }
+        if (dialect === 7) {
+            return wrap_cpblxgen('BREXIT_TWEET');
+        }
     }
 
 
