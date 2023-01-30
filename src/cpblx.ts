@@ -133,6 +133,9 @@ function cpblx(dialect = 0, x = 0, opt = '{}') {
         if (dialect === 1) {
             return wrap_cpblxgen('GENERIC_TWEET');
         }
+        if (dialect === 3) {
+            return wrap_cpblxgen('PUB_TWEET');
+        }
         if (dialect === 5) {
             return wrap_cpblxgen('VS_TWEET');
         }
